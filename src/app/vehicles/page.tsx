@@ -1,0 +1,18 @@
+import { ProductFilters } from "@/components/showroom/ProductFilters";
+import { getProducts, getStoreSettings } from "@/lib/data/queries";
+
+export default async function VehiclesPage() {
+  const [settings, products] = await Promise.all([getStoreSettings(), getProducts()]);
+  return (
+    <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
+      <div className="mb-8 max-w-4xl">
+        <p className="text-sm font-black uppercase tracking-[0.18em] text-[#119c3a]">Official product line-up</p>
+        <h1 className="mt-3 text-5xl font-black leading-tight text-[#101510]">All Kinetic Green products imported from official data.</h1>
+        <p className="mt-4 text-base font-semibold leading-7 text-[#526057]">
+          Filter by category, No Licence, No RTO, Student Friendly and Low Speed. Final availability for Shahdol must be confirmed with Om Associates.
+        </p>
+      </div>
+      <ProductFilters products={products} settings={settings} />
+    </section>
+  );
+}
