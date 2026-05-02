@@ -34,7 +34,7 @@ export function Header({ settings }: { settings: StoreSettings }) {
           <ButtonLink href={phoneHref(settings.phones[0])} variant="light">
             <Phone size={16} /> Call Showroom
           </ButtonLink>
-          <ButtonLink href="/book-enquiry">Enquire Now</ButtonLink>
+          <ButtonLink href={settings.whatsappUrl || `/`}>WhatsApp</ButtonLink>
         </nav>
         <button
           aria-label="Open menu"
@@ -60,7 +60,7 @@ export function Header({ settings }: { settings: StoreSettings }) {
           </div>
           <div className="grid grid-cols-2 gap-2">
             <ButtonLink href={phoneHref(settings.phones[0])} variant="light">Call</ButtonLink>
-            <ButtonLink href="/book-enquiry">Enquire</ButtonLink>
+            <ButtonLink href={settings.whatsappUrl || `/`}>WhatsApp</ButtonLink>
           </div>
         </div>
       ) : null}
