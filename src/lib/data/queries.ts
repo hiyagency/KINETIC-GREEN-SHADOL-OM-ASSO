@@ -9,6 +9,20 @@ function asStringArray(value: unknown): string[] {
   return Array.isArray(value) ? value.map(String) : [];
 }
 
+const EXCLUDED_CATEGORY_PATTERNS = [/three\s*wheel/i, /auto/i, /rickshaw/i, /cargo/i, /commercial/i, /passenger/i];
+const TWO_WHEELER_CATEGORY_MAP: Record<string, string> = {
+  "E-Luna": "Non-RTO Two-Wheeler",
+  Scooters: "Electric Scooter",
+};
+
+function isTwoWheelerCategory(category: string) {
+  if (!category) return false;
+  return !EXCLUDED_CATEGORY_PATTERNS.some((pattern) => pattern.test(category));
+}
+
+function normalizeCategory(category: string) {
+  return TWO_WHEELER_CATEGORY_MAP[category] || category;
+}
 
 function cleanCustomerCopy(value: string, fallback = "") {
   return value
@@ -25,7 +39,7 @@ function mapProduct(row: Record<string, unknown>): Product {
     officialId: String(row.official_id || ""),
     name: String(row.name || ""),
     slug: String(row.slug || ""),
-    category: String(row.category || ""),
+    category: normalizeCategory(String(row.category || "")),
     officialUrl: String(row.official_url || ""),
     shortDescription: cleanCustomerCopy(String(row.short_description || ""), "Easy electric ride for daily Shahdol travel."),
     longDescription: cleanCustomerCopy(String(row.long_description || ""), "Visit the showroom for complete details and delivery timeline."),
@@ -66,19 +80,25 @@ function mapProduct(row: Record<string, unknown>): Product {
 }
 
 export async function getProducts() {
-  if (!hasSupabaseEnv()) return products;
+  if (!hasSupabaseEnv()) {
+    return products
+      .map((product) => ({ ...product, category: normalizeCategory(product.category) }))
+      .filter((product) => product.isPublished && isTwoWheelerCategory(product.category));
+  }
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("products")
     .select("*")
     .eq("is_published", true)
     .order("sort_order", { ascending: true });
-  if (error || !data) return products;
-  return data.map((row) => mapProduct(row as Record<string, unknown>));
+  if (error || !data) return products.filter((product) => product.isPublished && isTwoWheelerCategory(product.category));
+  return data
+    .map((row) => mapProduct(row as Record<string, unknown>))
+    .filter((product) => isTwoWheelerCategory(product.category));
 }
 
 export async function getAllProductsForAdmin() {
-  if (!hasSupabaseEnv()) return products;
+  if (!hasSupabaseEnv()) return products.map((product) => ({ ...product, category: normalizeCategory(product.category) }));
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("products")

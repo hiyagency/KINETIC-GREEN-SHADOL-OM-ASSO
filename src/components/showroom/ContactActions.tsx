@@ -19,10 +19,10 @@ export function ContactActions({
   return (
     <div className={grid}>
       <ButtonLink href={phoneHref(settings.phones[0])} variant="dark">
-        <Phone size={16} /> Call Now
+        <Phone size={16} /> Call Showroom
       </ButtonLink>
       <ButtonLink href={whatsappHref(settings, msg)}>
-        <MessageCircle size={16} /> WhatsApp Now
+        <MessageCircle size={16} /> Enquire on WhatsApp
       </ButtonLink>
       <ButtonLink href={`/book-enquiry${product ? `?vehicle=${encodeURIComponent(product.name)}` : ""}`} variant="light">
         <CalendarCheck size={16} /> Book Test Ride
@@ -31,7 +31,7 @@ export function ContactActions({
         <Send size={16} /> Send Enquiry
       </ButtonLink>
       <ButtonLink href={directionsHref(settings)} variant="light">
-        <MapPin size={16} /> Get Directions
+        <MapPin size={16} /> Visit Showroom
       </ButtonLink>
       <ButtonLink href={settings.instagramUrl} variant="light">
         <Camera size={16} /> Instagram

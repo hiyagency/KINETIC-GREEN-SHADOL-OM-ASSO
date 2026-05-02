@@ -7,7 +7,7 @@ import { GallerySection } from "@/components/public/GallerySection";
 import { MapPlaceholder } from "@/components/public/MapPlaceholder";
 import { Reveal } from "@/components/public/Motion";
 import { ButtonLink } from "@/components/ui/Button";
-import { HINGLISH_DISCLAIMER, LOW_SPEED_RULE_HINGLISH } from "@/lib/constants";
+import { LOW_SPEED_RULE_HINGLISH } from "@/lib/constants";
 import { getEligibleProducts, getFaqs, getGallery, getProducts, getStoreSettings } from "@/lib/data/queries";
 import { whatsappHref, whatsappMessage } from "@/lib/utils";
 
@@ -33,9 +33,9 @@ export default async function HomePage() {
               Kinetic Green / Om Associate Shahdol
             </p>
             <h1 className="mt-6 max-w-[22rem] break-words text-[2.55rem] font-black leading-[1.04] tracking-tight sm:max-w-4xl sm:text-6xl lg:text-7xl">
-              Shahdol’s Smart Electric Ride — No Licence, No RTO
+              Non-RTO Electric Two-Wheelers for Students & Daily City Rides
             </h1>
-            <p className="mt-5 max-w-[22rem] text-lg leading-8 text-white/72 sm:max-w-2xl">Lithium battery electric vehicles for students, families, and daily local travel. Visit Om Associate at Kotma Tiraha, Badhganga Road.</p>
+            <p className="mt-5 max-w-[22rem] text-lg leading-8 text-white/72 sm:max-w-2xl">Explore Kinetic Green electric scooters designed for simple, affordable and hassle-free everyday travel. No registration stress, no heavy running cost — just easy electric mobility.</p>
             <div className="mt-7">
               <ContactActions settings={settings} context="licence" />
             </div>
@@ -51,7 +51,7 @@ export default async function HomePage() {
                 </div>
               ))}
             </div>
-            <p className="mt-6 max-w-2xl text-xs font-semibold leading-5 text-white/55">{HINGLISH_DISCLAIMER}</p>
+            <p className="mt-6 max-w-2xl text-xs font-semibold leading-5 text-white/55">Perfect for students and daily city rides. Visit the showroom or enquire directly on WhatsApp.</p>
           </Reveal>
           <Reveal delay={0.08}>
             <ProductLeadCard product={leadProduct} settings={settings} />
@@ -71,10 +71,10 @@ export default async function HomePage() {
       <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6">
         <div className="mb-7 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
           <div>
-            <p className="text-sm font-black uppercase tracking-[0.18em] text-[#119c3a]">Find the Right Electric Ride for You</p>
-            <h2 className="mt-2 text-4xl font-black text-[#101510]">College, tuition, market ya daily kaam — petrol ke kharche ke bina simple electric ride.</h2>
+            <p className="text-sm font-black uppercase tracking-[0.18em] text-[#119c3a]">Student-Friendly Non-RTO Electric Scooters</p>
+            <h2 className="mt-2 text-4xl font-black text-[#101510]">College, tuition, market ya daily kaam — petrol ke kharche ke bina easy electric ride.</h2>
           </div>
-          <ButtonLink href="/vehicles" variant="dark">View all products</ButtonLink>
+          <ButtonLink href="/vehicles" variant="dark">View Models</ButtonLink>
         </div>
         <ProductCarousel products={featured} settings={settings} />
       </section>
@@ -92,10 +92,10 @@ export default async function HomePage() {
           </Reveal>
           <div className="grid gap-3 sm:grid-cols-2">
             {[
-              [ShieldCheck, "Eligibility badges", "No Licence / No RTO badges appear only when enabled."],
-              [UsersRound, "Students & daily riders", "Short city travel, tuition, college and local commute use cases."],
-              [BatteryCharging, "Battery + warranty trust", "Lithium battery ke saath daily travel ke liye reliable performance and warranty support."],
-              [BadgeIndianRupee, "Get latest price", "Call or WhatsApp now to check on-road guidance, colour options and delivery timelines."],
+              [ShieldCheck, "No RTO registration hassle", "Ride freely without registration hassles for everyday local travel."],
+              [UsersRound, "Student-friendly daily ride", "Comfortable and practical for college, tuition, and daily city routes."],
+              [BatteryCharging, "Lithium battery options", "Lithium battery models with low running cost and easy charging."],
+              [BadgeIndianRupee, "Warranty support", "Showroom team shares current warranty support and easy purchase guidance."],
             ].map(([Icon, title, text]) => (
               <Reveal key={String(title)} className="rounded-2xl border border-[#dbe8db] bg-white p-5">
                 <Icon className="text-[#119c3a]" />
@@ -111,7 +111,7 @@ export default async function HomePage() {
         <div className="grid gap-8 lg:grid-cols-[0.78fr_1fr]">
           <div>
             <p className="text-sm font-black uppercase tracking-[0.18em] text-[#119c3a]">Categories</p>
-            <h2 className="mt-2 text-4xl font-black text-[#101510]">Official line-up, local purchase conversation.</h2>
+            <h2 className="mt-2 text-4xl font-black text-[#101510]">Choose your non-RTO two-wheeler by daily need.</h2>
           </div>
           <div className="grid gap-3 sm:grid-cols-3">
             {categories.map((category) => (
@@ -132,7 +132,7 @@ export default async function HomePage() {
           <div>
             <p className="text-sm font-black uppercase tracking-[0.18em] text-[#80f39a]">Book test ride / get price</p>
             <h2 className="mt-3 text-4xl font-black leading-tight">Price और availability के लिए showroom से contact करें.</h2>
-            <p className="mt-4 text-sm leading-7 text-white/68">No online payment. The showroom team handles final pricing, finance, delivery and eligibility confirmation.</p>
+            <p className="mt-4 text-sm leading-7 text-white/68">Enquire directly for best model, battery option, and delivery timelines.</p>
           </div>
           <div className="rounded-[22px] bg-white p-5 text-[#101510]">
             <ContactActions settings={settings} product={leadProduct} context="product" />

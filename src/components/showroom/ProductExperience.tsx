@@ -15,6 +15,7 @@ export function ProductExperience({ product }: { product: Product }) {
     if (variant?.imageUrls?.length) return variant.imageUrls;
     return product.viewer360Images;
   }, [product, selected]);
+  const hasVariantAssets = useMemo(() => product.variants.some((variant) => variant.name === selected?.name && variant.imageUrls?.length), [product.variants, selected?.name]);
 
   const preview = variantFrames[0] || product.heroImageUrl;
 
@@ -45,6 +46,7 @@ export function ProductExperience({ product }: { product: Product }) {
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={officialAssetSrc(preview)} alt={`${product.name} ${selected?.name ?? ""}`} className="h-44 w-full rounded-2xl object-contain bg-[#f3f8f3] p-2" />
         </> : null}
+        {selected?.name && !hasVariantAssets ? <p className="text-xs font-semibold text-[#657067]">Selected colour preview may vary. Contact showroom for live stock photos.</p> : null}
         {[
           ["Starting price", product.priceLabel],
           ["Battery", product.batteryType || product.specifications["Battery Capacity"]],

@@ -44,7 +44,7 @@ export default async function VehicleDetailPage({ params }: { params: Promise<{ 
         <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[0.8fr_1fr]">
           <div>
             <h2 className="text-4xl font-black text-[#101510]">No Licence / No RTO eligibility</h2>
-            <p className="mt-4 text-base leading-7 text-[#526057]">No Licence Required • No RTO Registration Required. Our team will confirm the exact model, colour, availability, and eligibility at the showroom before delivery.</p>
+            <p className="mt-4 text-base leading-7 text-[#526057]">No Licence Required • No RTO Registration Required. Perfect for students and daily city rides.</p>
             <p className="mt-4 rounded-2xl bg-white p-5 text-sm font-semibold leading-6 text-[#526057]">{product.disclaimerText || HINGLISH_DISCLAIMER}</p>
           </div>
           <div className="rounded-[20px] border border-[#dbe8db] bg-white p-5">
@@ -93,7 +93,7 @@ export default async function VehicleDetailPage({ params }: { params: Promise<{ 
         <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[0.8fr_1fr]">
           <div>
             <h2 className="text-4xl font-black">Get price, availability और test ride details.</h2>
-            <p className="mt-4 text-sm leading-7 text-white/68">The enquiry is saved in Supabase after connection. No online payment is collected.</p>
+            <p className="mt-4 text-sm leading-7 text-white/68">Enquire now for latest price, colour availability, warranty support, and showroom visit details.</p>
           </div>
           <EnquiryForm vehicles={allProducts} selectedVehicle={product.name} />
         </div>
