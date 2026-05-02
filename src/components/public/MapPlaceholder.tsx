@@ -14,11 +14,9 @@ export function MapPlaceholder({ settings }: { settings: StoreSettings }) {
   return (
     <div className="rounded-lg border border-dashed border-[#b8d8bd] bg-[#f5faf5] p-6">
       <MapPin className="text-[#13a538]" />
-      <h3 className="mt-4 text-xl font-black text-[#101513]">Google Maps coming soon</h3>
-      <p className="mt-2 text-sm leading-6 text-[#5c675f]">{settings.address}</p>
-      <p className="mt-4 text-xs font-semibold text-[#66706a]">
-        Admin can paste the final Google Maps embed or link here later.
-      </p>
+      <h3 className="mt-4 text-xl font-black text-[#101513]">Visit Om Associate Shahdol Today</h3>
+      <p className="mt-2 text-sm leading-6 text-[#5c675f]">Om Associate, Kotma Tiraha, Badhganga Road, Shahdol</p>
+      <p className="mt-4 text-xs font-semibold text-[#66706a]">Tap directions to open Google Maps and reach the showroom easily.</p>
     </div>
   );
 }

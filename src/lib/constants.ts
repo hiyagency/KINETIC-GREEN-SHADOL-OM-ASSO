@@ -1,8 +1,8 @@
 export const HINGLISH_DISCLAIMER =
-  "यह सुविधा केवल selected low-speed EV models पर लागू हो सकती है. Model, speed category, motor power और current government rules के अनुसार eligibility बदल सकती है. Purchase से पहले showroom से confirm करें.";
+  "All listed low-speed models shown on this page are No Licence / No RTO eligible. Final eligibility and model details will be confirmed at the showroom before purchase.";
 
 export const LOW_SPEED_RULE_HINGLISH =
-  "Selected low-speed EV models may not require driving licence or RTO registration. Eligibility generally depends on speed category, motor power and current government rules.";
+  "Listed low-speed models here are focused for students, parents and local daily travel in Shahdol with showroom confirmation before purchase.";
 
 export const enquiryTypes = [
   "No Licence EV",

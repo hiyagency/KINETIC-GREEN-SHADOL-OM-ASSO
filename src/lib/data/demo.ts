@@ -35,7 +35,7 @@ export const faqs: FAQ[] = [
     id: "faq-licence",
     question: "क्या बिना licence के EV चला सकते हैं?",
     answer:
-      "Selected low-speed EV models पर यह सुविधा लागू हो सकती है. Model, speed category, motor power और current government rules के अनुसार showroom से confirm करें.",
+      "Listed low-speed models shown here are No Licence / No RTO friendly. Our team will confirm the exact model before delivery.",
     category: "No Licence",
     productId: null,
     isPublished: true,
@@ -45,7 +45,7 @@ export const faqs: FAQ[] = [
     id: "faq-rto",
     question: "क्या RTO registration जरूरी है?",
     answer:
-      "हर model के लिए rule अलग हो सकता है. No RTO badge केवल उन products पर दिखाया गया है जहां admin ने eligibility enable की है.",
+      "Listed low-speed models on this site are shown as No RTO. Call us for current model and colour availability.",
     category: "No Licence",
     productId: null,
     isPublished: true,
@@ -55,7 +55,7 @@ export const faqs: FAQ[] = [
     id: "faq-models",
     question: "कौनसे models no licence category में आते हैं?",
     answer:
-      "No Licence EV page पर केवल वही models दिखेंगे जिनमें no_licence_required और no_rto_required दोनों true हैं.",
+      "No Licence EV page par student-friendly local rides dikhte hain. Showroom team aapko best option suggest karegi.",
     category: "Products",
     productId: null,
     isPublished: true,
@@ -155,7 +155,7 @@ export const gallery: GalleryItem[] = [
   {
     id: "gallery-1",
     imageUrl: "",
-    caption: "Showroom photo will be uploaded from admin",
+    caption: "Showroom photos",
     type: "showroom",
     isFeatured: true,
     sortOrder: 1,

@@ -25,7 +25,7 @@ export function whatsappMessage(kind: "product" | "licence" | "general", product
   if (kind === "licence") {
     return "नमस्ते Kinetic Green Shahdol, मुझे बिना licence और बिना RTO वाले EV models के बारे में जानकारी चाहिए.";
   }
-  return "नमस्ते Kinetic Green Shahdol, मुझे electric scooter के बारे में जानकारी चाहिए.";
+  return "Hi Om Associate, I'm interested in the no licence electric vehicle starting from ₹74,999. Please share details.";
 }
 
 export function whatsappHref(settings: StoreSettings, message: string) {

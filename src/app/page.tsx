@@ -30,21 +30,21 @@ export default async function HomePage() {
         <div className="relative mx-auto grid max-w-7xl gap-8 px-4 py-10 sm:px-6 lg:grid-cols-[1fr_0.86fr] lg:py-16">
           <Reveal className="flex flex-col justify-center">
             <p className="w-fit rounded-full border border-[#21c44d]/30 bg-[#21c44d]/10 px-4 py-2 text-xs font-black uppercase tracking-[0.18em] text-[#80f39a]">
-              Kinetic Green Shahdol • Om Associates
+              Kinetic Green / Om Associate Shahdol
             </p>
             <h1 className="mt-6 max-w-[22rem] break-words text-[2.55rem] font-black leading-[1.04] tracking-tight sm:max-w-4xl sm:text-6xl lg:text-7xl">
-              {settings.heroHeadline}
+              Shahdol’s Smart Electric Ride — No Licence, No RTO
             </h1>
-            <p className="mt-5 max-w-[22rem] text-lg leading-8 text-white/72 sm:max-w-2xl">{settings.heroSubheadline}</p>
+            <p className="mt-5 max-w-[22rem] text-lg leading-8 text-white/72 sm:max-w-2xl">Lithium battery electric vehicles for students, families, and daily local travel. Visit Om Associate at Kotma Tiraha, Badhganga Road.</p>
             <div className="mt-7">
               <ContactActions settings={settings} context="licence" />
             </div>
             <div className="mt-8 grid max-w-[22rem] grid-cols-2 gap-3 sm:max-w-none sm:grid-cols-4">
               {[
-                "Selected models only",
-                "Official product data",
-                "Local Shahdol showroom",
-                "No online payment",
+                "Starting from ₹74,999",
+                "No Licence",
+                "No RTO",
+                "Lithium + Warranty",
               ].map((item) => (
                 <div key={item} className="min-w-0 break-words rounded-2xl border border-white/10 bg-white/[0.06] p-4 text-sm font-black leading-5">
                   {item}
@@ -71,8 +71,8 @@ export default async function HomePage() {
       <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6">
         <div className="mb-7 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
           <div>
-            <p className="text-sm font-black uppercase tracking-[0.18em] text-[#119c3a]">Official product carousel</p>
-            <h2 className="mt-2 text-4xl font-black text-[#101510]">Kinetic Green products for Shahdol enquiries.</h2>
+            <p className="text-sm font-black uppercase tracking-[0.18em] text-[#119c3a]">Find the Right Electric Ride for You</p>
+            <h2 className="mt-2 text-4xl font-black text-[#101510]">College, tuition, market ya daily kaam — petrol ke kharche ke bina simple electric ride.</h2>
           </div>
           <ButtonLink href="/vehicles" variant="dark">View all products</ButtonLink>
         </div>
@@ -83,7 +83,7 @@ export default async function HomePage() {
         <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[0.85fr_1fr]">
           <Reveal>
             <p className="text-sm font-black uppercase tracking-[0.18em] text-[#119c3a]">No Licence / No RTO explainer</p>
-            <h2 className="mt-3 text-4xl font-black leading-tight text-[#101510]">Claims are controlled model-wise from admin.</h2>
+            <h2 className="mt-3 text-4xl font-black leading-tight text-[#101510]">Ride Easy Without Licence or RTO Hassle</h2>
             <p className="mt-4 text-base leading-7 text-[#526057]">{LOW_SPEED_RULE_HINGLISH}</p>
             <p className="mt-5 rounded-2xl bg-white p-5 text-sm font-semibold leading-6 text-[#526057]">{HINGLISH_DISCLAIMER}</p>
             <div className="mt-6">
@@ -94,8 +94,8 @@ export default async function HomePage() {
             {[
               [ShieldCheck, "Eligibility badges", "No Licence / No RTO badges appear only when enabled."],
               [UsersRound, "Students & daily riders", "Short city travel, tuition, college and local commute use cases."],
-              [BatteryCharging, "Battery + warranty trust", "Range, charging and warranty remain official/editable fields."],
-              [BadgeIndianRupee, "Get price directly", "No checkout. Price and finance confirmed by showroom."],
+              [BatteryCharging, "Battery + warranty trust", "Lithium battery ke saath daily travel ke liye reliable performance and warranty support."],
+              [BadgeIndianRupee, "Get latest price", "Call or WhatsApp now to check on-road guidance, colour options and delivery timelines."],
             ].map(([Icon, title, text]) => (
               <Reveal key={String(title)} className="rounded-2xl border border-[#dbe8db] bg-white p-5">
                 <Icon className="text-[#119c3a]" />
@@ -119,7 +119,7 @@ export default async function HomePage() {
                 <Sparkles className="text-[#119c3a]" />
                 <h3 className="mt-4 text-2xl font-black">{category}</h3>
                 <p className="mt-2 text-sm font-semibold text-[#526057]">
-                  {products.filter((product) => product.category === category).length} official products
+                  {products.filter((product) => product.category === category).length} models available
                 </p>
               </div>
             ))}
@@ -142,8 +142,8 @@ export default async function HomePage() {
 
       <section className="mx-auto grid max-w-7xl gap-8 px-4 py-14 sm:px-6 lg:grid-cols-2">
         <div>
-          <h2 className="text-3xl font-black text-[#101510]">Showroom gallery</h2>
-          <p className="mt-2 text-sm font-semibold text-[#526057]">Admin can upload real Shahdol showroom photos later.</p>
+          <h2 className="text-3xl font-black text-[#101510]">Visit Om Associate Shahdol Today</h2>
+          <p className="mt-2 text-sm font-semibold text-[#526057]">Direct help from Om Associate Shahdol for test ride, purchase support, and delivery updates.</p>
           <div className="mt-5"><GallerySection items={gallery} /></div>
         </div>
         <div>

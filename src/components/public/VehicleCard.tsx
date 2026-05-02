@@ -32,11 +32,11 @@ export function VehicleCard({
         <div className="grid grid-cols-2 gap-2 text-sm">
           <span className="rounded-lg bg-[#f5faf5] p-3 font-semibold text-[#303a33]">
             <Gauge className="mb-1 text-[#13a538]" size={18} />
-            {vehicle.topSpeed || "Speed editable"}
+            {vehicle.topSpeed || "Ask Us"}
           </span>
           <span className="rounded-lg bg-[#f5faf5] p-3 font-semibold text-[#303a33]">
             <Zap className="mb-1 text-[#13a538]" size={18} />
-            {vehicle.motorPower || "Motor editable"}
+            {vehicle.motorPower || "Ask Us"}
           </span>
         </div>
         <div className="grid grid-cols-2 gap-2">

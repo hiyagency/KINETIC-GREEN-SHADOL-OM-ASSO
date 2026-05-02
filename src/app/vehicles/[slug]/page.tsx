@@ -3,7 +3,7 @@ import { ContactActions } from "@/components/showroom/ContactActions";
 import { EligibilityPills } from "@/components/showroom/EligibilityPills";
 import { ProductCard } from "@/components/showroom/ProductCard";
 import { ProductImage } from "@/components/showroom/ProductImage";
-import { Viewer360 } from "@/components/showroom/Viewer360";
+import { ProductExperience } from "@/components/showroom/ProductExperience";
 import { EnquiryForm } from "@/components/public/EnquiryForm";
 import { HINGLISH_DISCLAIMER } from "@/lib/constants";
 import { getProductBySlug, getProducts, getStoreSettings } from "@/lib/data/queries";
@@ -17,7 +17,7 @@ export default async function VehicleDetailPage({ params }: { params: Promise<{ 
     getProductBySlug(slug),
   ]);
   if (!product) notFound();
-  const similar = allProducts.filter((item) => item.slug !== product.slug && item.category === product.category).slice(0, 3);
+  const similar = Array.from(new Map(allProducts.filter((item) => item.slug !== product.slug && item.category === product.category).map((item) => [item.slug, item])).values()).slice(0, 4);
 
   return (
     <div>
@@ -37,34 +37,14 @@ export default async function VehicleDetailPage({ params }: { params: Promise<{ 
       </section>
 
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
-        <div className="grid gap-5 lg:grid-cols-[1fr_0.7fr]">
-          <Viewer360 product={product} />
-          <div className="grid gap-4 rounded-[20px] border border-[#dbe8db] bg-white p-5">
-            <h2 className="text-3xl font-black text-[#101510]">Quick specs</h2>
-            {[
-              ["Price", product.priceLabel],
-              ["Range", product.rangeLabel],
-              ["Top speed", product.topSpeed],
-              ["Motor power", product.motorPower],
-              ["Battery", product.batteryType || product.specifications["Battery Capacity"]],
-              ["Charging", product.chargingTime],
-              ["Warranty", product.warranty],
-            ].map(([label, value]) => (
-              <div key={label} className="flex justify-between gap-4 border-b border-[#edf3ed] pb-3 text-sm">
-                <span className="font-bold text-[#657067]">{label}</span>
-                <span className="text-right font-black text-[#101510]">{value || "Confirm with showroom"}</span>
-              </div>
-            ))}
-            {product.brochureUrl ? <a href={product.brochureUrl} className="rounded-xl bg-[#101510] px-4 py-3 text-center text-sm font-black text-white">Download official brochure</a> : null}
-          </div>
-        </div>
+        <ProductExperience product={product} />
       </section>
 
       <section className="bg-[#eef8ef] py-12">
         <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[0.8fr_1fr]">
           <div>
             <h2 className="text-4xl font-black text-[#101510]">No Licence / No RTO eligibility</h2>
-            <p className="mt-4 text-base leading-7 text-[#526057]">{product.eligibilityNote}</p>
+            <p className="mt-4 text-base leading-7 text-[#526057]">No Licence Required • No RTO Registration Required. Our team will confirm the exact model, colour, availability, and eligibility at the showroom before delivery.</p>
             <p className="mt-4 rounded-2xl bg-white p-5 text-sm font-semibold leading-6 text-[#526057]">{product.disclaimerText || HINGLISH_DISCLAIMER}</p>
           </div>
           <div className="rounded-[20px] border border-[#dbe8db] bg-white p-5">
@@ -74,7 +54,7 @@ export default async function VehicleDetailPage({ params }: { params: Promise<{ 
                 <span key={`${color.name}-${color.value}`} className="inline-flex items-center gap-2 rounded-full border border-[#dbe8db] px-3 py-2 text-sm font-black">
                   <span className="h-5 w-5 rounded-full border" style={{ background: color.value }} /> {color.name}
                 </span>
-              )) : <p className="text-sm font-semibold text-[#526057]">Color data needs admin review.</p>}
+              )) : <p className="text-sm font-semibold text-[#526057]">Available colours may vary. Call or WhatsApp us for today&rsquo;s options.</p>}
             </div>
           </div>
         </div>
@@ -93,7 +73,7 @@ export default async function VehicleDetailPage({ params }: { params: Promise<{ 
                 <h3 className="text-lg font-black">{highlight.title}</h3>
                 <p className="mt-2 text-sm leading-6 text-[#526057]">{highlight.description}</p>
               </div>
-            )) : <p className="font-semibold text-[#526057]">Official highlights need admin review.</p>}
+            )) : <p className="font-semibold text-[#526057]">Highlights are shared by showroom team based on current display model.</p>}
           </div>
         </div>
         <div>
