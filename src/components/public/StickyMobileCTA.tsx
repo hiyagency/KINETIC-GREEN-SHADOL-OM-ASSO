@@ -1,6 +1,6 @@
-import { CalendarCheck, MessageCircle, Phone } from "lucide-react";
+import { MapPin, MessageCircle, Phone } from "lucide-react";
 import type { StoreSettings } from "@/lib/types";
-import { phoneHref, whatsappHref, whatsappMessage } from "@/lib/utils";
+import { directionsHref, phoneHref, whatsappHref, whatsappMessage } from "@/lib/utils";
 
 export function StickyMobileCTA({ settings }: { settings: StoreSettings }) {
   return (
@@ -11,8 +11,8 @@ export function StickyMobileCTA({ settings }: { settings: StoreSettings }) {
       <a className="min-w-0 overflow-hidden flex flex-col items-center justify-center rounded-xl bg-[#14a83b] py-2 text-[10px] font-black text-white" href={whatsappHref(settings, whatsappMessage("general"))}>
         <MessageCircle size={18} /> WhatsApp
       </a>
-      <a className="min-w-0 overflow-hidden flex flex-col items-center justify-center rounded-xl py-2 text-[10px] font-black text-[#101510]" href="/book-enquiry">
-        <CalendarCheck size={18} /> Enquire
+      <a className="min-w-0 overflow-hidden flex flex-col items-center justify-center rounded-xl py-2 text-[10px] font-black text-[#101510]" href={directionsHref(settings)}>
+        <MapPin size={18} /> Directions
       </a>
     </div>
   );
