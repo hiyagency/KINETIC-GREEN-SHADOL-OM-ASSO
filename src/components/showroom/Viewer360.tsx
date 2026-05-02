@@ -10,9 +10,11 @@ export function Viewer360({ product, framesOverride }: { product: Product; frame
   const [index, setIndex] = useState(0);
   const [dragging, setDragging] = useState(false);
   const [ready, setReady] = useState(false);
+  const [interacting, setInteracting] = useState(false);
   const lastX = useRef<number | null>(null);
-  const velocity = useRef(0);
-  const inertia = useRef<number | null>(null);
+  const autoRotateRaf = useRef<number | null>(null);
+  const autoRotatePauseUntil = useRef(0);
+  const autoRotateLastTick = useRef(0);
 
   useEffect(() => {
     if (frames.length < 2) return;
@@ -24,7 +26,26 @@ export function Viewer360({ product, framesOverride }: { product: Product; frame
     }))).then(() => setReady(true));
   }, [frames]);
 
-  useEffect(() => () => { if (inertia.current) cancelAnimationFrame(inertia.current); }, []);
+  useEffect(() => () => { if (autoRotateRaf.current) cancelAnimationFrame(autoRotateRaf.current); }, []);
+
+  useEffect(() => {
+    if (!ready || frames.length < 2) return;
+    const intervalMs = 110;
+    const tick = (time: number) => {
+      if (!autoRotateLastTick.current) autoRotateLastTick.current = time;
+      if (!dragging && !interacting && time >= autoRotatePauseUntil.current && time - autoRotateLastTick.current >= intervalMs) {
+        setIndex((current) => (current + 1) % frames.length);
+        autoRotateLastTick.current = time;
+      }
+      autoRotateRaf.current = requestAnimationFrame(tick);
+    };
+    autoRotateRaf.current = requestAnimationFrame(tick);
+    return () => {
+      if (autoRotateRaf.current) cancelAnimationFrame(autoRotateRaf.current);
+      autoRotateRaf.current = null;
+      autoRotateLastTick.current = 0;
+    };
+  }, [dragging, frames.length, interacting, ready]);
 
   if (product.viewer360Type === "embed" && product.viewer360EmbedUrl) {
     return <div className="overflow-hidden rounded-[20px] border border-[#dce8dc] bg-white"><iframe src={product.viewer360EmbedUrl} title={`${product.name} 360 view`} className="h-[420px] w-full" loading="lazy" /></div>;
@@ -38,36 +59,27 @@ export function Viewer360({ product, framesOverride }: { product: Product; frame
   const onMove = (clientX:number) => {
     if (lastX.current === null) return;
     const delta = clientX - lastX.current;
-    if (Math.abs(delta) < 6) return;
+    if (Math.abs(delta) < 12) return;
     step(delta);
-    velocity.current = delta;
     lastX.current = clientX;
-  };
-  const startInertia = () => {
-    const tick = () => {
-      velocity.current *= 0.92;
-      if (Math.abs(velocity.current) < 0.2) return;
-      step(velocity.current);
-      inertia.current = requestAnimationFrame(tick);
-    };
-    inertia.current = requestAnimationFrame(tick);
   };
 
   return (
     <div className={`select-none overflow-hidden rounded-[20px] border border-[#dce8dc] bg-[radial-gradient(circle_at_center,#fff_0,#edf8ee_100%)] p-4 ${dragging ? "cursor-grabbing" : "cursor-grab"}`}
-      onMouseDown={(e)=>{setDragging(true);lastX.current=e.clientX;}}
+      onMouseEnter={()=>setInteracting(true)}
+      onMouseLeave={()=>{setDragging(false);lastX.current=null;setInteracting(false);autoRotatePauseUntil.current = performance.now() + 2600;}}
+      onMouseDown={(e)=>{setDragging(true);setInteracting(true);lastX.current=e.clientX;autoRotatePauseUntil.current = performance.now() + 2600;}}
       onMouseMove={(e)=>onMove(e.clientX)}
-      onMouseUp={()=>{setDragging(false);lastX.current=null;startInertia();}}
-      onMouseLeave={()=>{setDragging(false);lastX.current=null;}}
-      onTouchStart={(e)=>{setDragging(true);lastX.current=e.touches[0].clientX;}}
+      onMouseUp={()=>{setDragging(false);lastX.current=null;autoRotatePauseUntil.current = performance.now() + 2600;}}
+      onTouchStart={(e)=>{setDragging(true);setInteracting(true);lastX.current=e.touches[0].clientX;autoRotatePauseUntil.current = performance.now() + 2800;}}
       onTouchMove={(e)=>onMove(e.touches[0].clientX)}
-      onTouchEnd={()=>{setDragging(false);lastX.current=null;startInertia();}}
+      onTouchEnd={()=>{setDragging(false);setInteracting(false);lastX.current=null;autoRotatePauseUntil.current = performance.now() + 2800;}}
     >
       <div className="flex items-center justify-between gap-4 px-2 pb-3"><h3 className="text-2xl font-black text-[#101510]">Drag / swipe to rotate</h3><div className="rounded-full bg-[#101510] px-3 py-1 text-xs font-black text-white">360°</div></div>
       <div className="aspect-[4/3]">{ready ? <>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img src={officialAssetSrc(frames[index])} alt={`${product.name} frame ${index + 1}`} className="h-full w-full object-contain" draggable={false} />
-      </> : <div className="flex h-full items-center justify-center text-sm font-semibold text-[#526057]">Loading 360 frames…</div>}</div>
+      </> : <div className="flex h-full animate-pulse items-center justify-center rounded-2xl bg-[#eef8ef] text-sm font-semibold text-[#526057]">Loading 360° view…</div>}</div>
     </div>
   );
 }

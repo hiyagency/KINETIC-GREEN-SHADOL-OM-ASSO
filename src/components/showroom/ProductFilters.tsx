@@ -6,8 +6,8 @@ import type { Product, StoreSettings } from "@/lib/types";
 
 export function ProductFilters({ products, settings }: { products: Product[]; settings: StoreSettings }) {
   const categories = Array.from(new Set(products.map((product) => product.category)));
-  const preferred = ["E-Luna", "Scooters", "Three Wheelers"];
-  const filters = ["All", ...preferred.filter((c) => categories.includes(c)), ...categories.filter((c) => !preferred.includes(c)), "No Licence", "No RTO", "Student Friendly", "Low Speed"];
+  const preferred = ["Electric Scooter", "Non-RTO Two-Wheeler", "Student Friendly EV", "Lithium Battery Scooter"];
+  const filters = ["All", ...preferred.filter((c) => categories.includes(c)), ...categories.filter((c) => !preferred.includes(c)), "No Licence", "No RTO", "Student Friendly"];
   const [active, setActive] = useState("All");
 
   const filtered = useMemo(() => products.filter((product) => {

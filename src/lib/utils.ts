@@ -20,12 +20,12 @@ export function whatsappNumber(settings: StoreSettings) {
 
 export function whatsappMessage(kind: "product" | "licence" | "general", product?: Product) {
   if (kind === "product" && product) {
-    return `नमस्ते Kinetic Green Shahdol, मुझे ${product.name} के बारे में जानकारी चाहिए. कृपया price, availability और test ride details बताएं.`;
+    return `Hi, I’m interested in the Kinetic Green ${product.name}. Please share price, availability, warranty and showroom details.`;
   }
   if (kind === "licence") {
-    return "नमस्ते Kinetic Green Shahdol, मुझे बिना licence और बिना RTO वाले EV models के बारे में जानकारी चाहिए.";
+    return "Hi, I’m looking for non-RTO electric two-wheelers for daily city use. Please share available models and prices.";
   }
-  return "Hi Om Associate, I'm interested in the no licence electric vehicle starting from ₹74,999. Please share details.";
+  return "Hi, I’m interested in your non-RTO electric two-wheelers. Please share today’s models, prices, and warranty details.";
 }
 
 export function whatsappHref(settings: StoreSettings, message: string) {
