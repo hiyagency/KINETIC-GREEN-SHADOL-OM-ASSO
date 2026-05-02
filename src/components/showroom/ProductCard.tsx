@@ -6,6 +6,14 @@ import { ProductImage } from "@/components/showroom/ProductImage";
 import type { Product, StoreSettings } from "@/lib/types";
 import { whatsappHref, whatsappMessage } from "@/lib/utils";
 
+function cleanSpec(value: string) {
+  const v = value?.trim();
+  if (!v) return "Ask Us";
+  if (/^0(\s|$)/.test(v) || v.toLowerCase() === "0 km") return "Ask Us";
+  return v;
+}
+
+
 export function ProductCard({
   product,
   settings,
@@ -34,9 +42,9 @@ export function ProductCard({
         </div>
         <EligibilityPills product={product} />
         <div className="grid grid-cols-3 gap-2 text-center text-xs font-black">
-          <div className="rounded-xl bg-[#f5f8f4] p-3"><span className="block text-[#687269]">Range</span>{product.rangeLabel || "Ask"}</div>
-          <div className="rounded-xl bg-[#f5f8f4] p-3"><span className="block text-[#687269]">Speed</span>{product.topSpeed || "Ask"}</div>
-          <div className="rounded-xl bg-[#f5f8f4] p-3"><span className="block text-[#687269]">Power</span>{product.motorPower || "Ask"}</div>
+          <div className="rounded-xl bg-[#f5f8f4] p-3"><span className="block text-[#687269]">Range</span>{cleanSpec(product.rangeLabel)}</div>
+          <div className="rounded-xl bg-[#f5f8f4] p-3"><span className="block text-[#687269]">Speed</span>{cleanSpec(product.topSpeed)}</div>
+          <div className="rounded-xl bg-[#f5f8f4] p-3"><span className="block text-[#687269]">Power</span>{cleanSpec(product.motorPower)}</div>
         </div>
         <div className="grid grid-cols-2 gap-2">
           <Link href={`/vehicles/${product.slug}`} className="rounded-xl bg-[#101510] px-4 py-3 text-center text-sm font-black text-white">

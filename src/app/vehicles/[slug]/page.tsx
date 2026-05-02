@@ -44,7 +44,7 @@ export default async function VehicleDetailPage({ params }: { params: Promise<{ 
         <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[0.8fr_1fr]">
           <div>
             <h2 className="text-4xl font-black text-[#101510]">No Licence / No RTO eligibility</h2>
-            <p className="mt-4 text-base leading-7 text-[#526057]">All listed low-speed models shown on this page are No Licence / No RTO eligible. Final eligibility and model details will be confirmed at the showroom before purchase.</p>
+            <p className="mt-4 text-base leading-7 text-[#526057]">No Licence Required • No RTO Registration Required. Our team will confirm the exact model, colour, availability, and eligibility at the showroom before delivery.</p>
             <p className="mt-4 rounded-2xl bg-white p-5 text-sm font-semibold leading-6 text-[#526057]">{product.disclaimerText || HINGLISH_DISCLAIMER}</p>
           </div>
           <div className="rounded-[20px] border border-[#dbe8db] bg-white p-5">
@@ -54,7 +54,7 @@ export default async function VehicleDetailPage({ params }: { params: Promise<{ 
                 <span key={`${color.name}-${color.value}`} className="inline-flex items-center gap-2 rounded-full border border-[#dbe8db] px-3 py-2 text-sm font-black">
                   <span className="h-5 w-5 rounded-full border" style={{ background: color.value }} /> {color.name}
                 </span>
-              )) : <p className="text-sm font-semibold text-[#526057]">Color data needs admin review.</p>}
+              )) : <p className="text-sm font-semibold text-[#526057]">Available colours may vary. Call or WhatsApp us for today&rsquo;s options.</p>}
             </div>
           </div>
         </div>
@@ -73,7 +73,7 @@ export default async function VehicleDetailPage({ params }: { params: Promise<{ 
                 <h3 className="text-lg font-black">{highlight.title}</h3>
                 <p className="mt-2 text-sm leading-6 text-[#526057]">{highlight.description}</p>
               </div>
-            )) : <p className="font-semibold text-[#526057]">Official highlights need admin review.</p>}
+            )) : <p className="font-semibold text-[#526057]">Highlights are shared by showroom team based on current display model.</p>}
           </div>
         </div>
         <div>

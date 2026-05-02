@@ -9,6 +9,16 @@ function asStringArray(value: unknown): string[] {
   return Array.isArray(value) ? value.map(String) : [];
 }
 
+
+function cleanCustomerCopy(value: string, fallback = "") {
+  return value
+    .replace(/Official Kinetic Green product data imported from the live product API\.?/gi, "Simple electric ride for local use in Shahdol.")
+    .replace(/Official Kinetic Green product data imported for Kinetic Green Shahdol\.?/gi, "Available through Om Associate Shahdol.")
+    .replace(/Final availability, price and eligibility must be confirmed with the showroom\.?/gi, "Call or WhatsApp us for today’s stock, colours, and latest price.")
+    .replace(/No-licence\/no-RTO eligibility is not enabled for this imported product until admin verifies it\.?/gi, "No Licence and No RTO details are shared by our showroom team.")
+    .trim() || fallback;
+}
+
 function mapProduct(row: Record<string, unknown>): Product {
   return {
     id: String(row.id),
@@ -17,8 +27,8 @@ function mapProduct(row: Record<string, unknown>): Product {
     slug: String(row.slug || ""),
     category: String(row.category || ""),
     officialUrl: String(row.official_url || ""),
-    shortDescription: String(row.short_description || ""),
-    longDescription: String(row.long_description || ""),
+    shortDescription: cleanCustomerCopy(String(row.short_description || ""), "Easy electric ride for daily Shahdol travel."),
+    longDescription: cleanCustomerCopy(String(row.long_description || ""), "Visit the showroom for complete details and delivery timeline."),
     heroImageUrl: String(row.hero_image_url || ""),
     galleryImages: asStringArray(row.gallery_images),
     viewer360Type:
@@ -45,7 +55,7 @@ function mapProduct(row: Record<string, unknown>): Product {
     noRtoRequired: Boolean(row.no_rto_required),
     lowSpeedVehicle: Boolean(row.low_speed_vehicle),
     studentFriendly: Boolean(row.student_friendly),
-    eligibilityNote: String(row.eligibility_note || ""),
+    eligibilityNote: cleanCustomerCopy(String(row.eligibility_note || ""), "No Licence Required • No RTO Registration Required."),
     disclaimerText: String(row.disclaimer_text || ""),
     brochureUrl: String(row.brochure_url || ""),
     isFeatured: Boolean(row.is_featured),

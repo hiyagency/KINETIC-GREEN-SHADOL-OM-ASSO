@@ -1,4 +1,4 @@
-import { BadgeCheck, Gauge, GraduationCap, ShieldCheck } from "lucide-react";
+import { BadgeCheck, BatteryCharging, Gauge, GraduationCap, ShieldCheck } from "lucide-react";
 import type { Product } from "@/lib/types";
 
 export function EligibilityPills({ product }: { product: Product }) {
@@ -7,11 +7,9 @@ export function EligibilityPills({ product }: { product: Product }) {
     product.noRtoRequired ? ["No RTO", ShieldCheck] : null,
     product.lowSpeedVehicle ? ["Low Speed", Gauge] : null,
     product.studentFriendly ? ["Student Friendly", GraduationCap] : null,
+    product.batteryType?.toLowerCase().includes("lithium") ? ["Lithium Battery", BatteryCharging] : null,
+    product.warranty ? ["Warranty Support", BadgeCheck] : null,
   ].filter(Boolean) as [string, typeof BadgeCheck][];
-
-  if (!pills.length) {
-    return <span className="rounded-full bg-[#eef1ee] px-3 py-1 text-xs font-black text-[#5a655d]">Eligibility not enabled</span>;
-  }
 
   return (
     <div className="flex flex-wrap gap-2">
