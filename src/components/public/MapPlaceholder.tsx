@@ -17,7 +17,7 @@ export function MapPlaceholder({ settings }: { settings: StoreSettings }) {
       <h3 className="mt-4 text-xl font-black text-[#101513]">Google Maps coming soon</h3>
       <p className="mt-2 text-sm leading-6 text-[#5c675f]">{settings.address}</p>
       <p className="mt-4 text-xs font-semibold text-[#66706a]">
-        Admin can paste the final Google Maps embed or link here later.
+        Call or WhatsApp the showroom for directions.
       </p>
     </div>
   );

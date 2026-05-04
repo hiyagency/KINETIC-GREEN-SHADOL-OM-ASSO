@@ -6,10 +6,10 @@ export default async function VehiclesPage() {
   return (
     <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
       <div className="mb-8 max-w-4xl">
-        <p className="text-sm font-black uppercase tracking-[0.18em] text-[#119c3a]">Official product line-up</p>
-        <h1 className="mt-3 text-5xl font-black leading-tight text-[#101510]">All Kinetic Green products imported from official data.</h1>
+        <p className="text-sm font-black uppercase tracking-[0.18em] text-[#119c3a]">Non-registration electric two-wheelers</p>
+        <h1 className="mt-3 text-5xl font-black leading-tight text-[#101510]">Student-friendly electric two-wheelers available in Shahdol.</h1>
         <p className="mt-4 text-base font-semibold leading-7 text-[#526057]">
-          Filter by category, No Licence, No RTO, Student Friendly and Low Speed. Final availability for Shahdol must be confirmed with Om Associates.
+          Explore non-registration electric two-wheelers for daily local rides. Visit the showroom or enquire to confirm the best model for your need.
         </p>
       </div>
       <ProductFilters products={products} settings={settings} />

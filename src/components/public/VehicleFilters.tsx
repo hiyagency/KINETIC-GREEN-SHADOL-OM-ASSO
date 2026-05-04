@@ -6,11 +6,11 @@ import type { StoreSettings, Vehicle } from "@/lib/types";
 
 const filters = [
   "All",
-  "No Licence Required",
-  "No RTO Required",
-  "Scooters",
-  "E-Luna",
-  "2 Wheelers",
+  "No-License",
+  "Non-Registration",
+  "Electric Scooter",
+  "Student EV",
+  "Daily Ride EV",
   "Student Friendly",
   "Featured",
 ];
@@ -26,9 +26,11 @@ export function VehicleFilters({
   const filtered = useMemo(() => {
     return vehicles.filter((vehicle) => {
       if (active === "All") return true;
-      if (active === "No Licence Required") return vehicle.noLicenceRequired;
-      if (active === "No RTO Required") return vehicle.noRtoRequired;
+      if (active === "No-License") return vehicle.noLicenceRequired;
+      if (active === "Non-Registration") return vehicle.noRtoRequired;
       if (active === "Student Friendly") return vehicle.studentFriendly;
+      if (active === "Daily Ride EV") return vehicle.lowSpeedVehicle;
+      if (active === "Electric Scooter" || active === "Student EV") return true;
       if (active === "Featured") return vehicle.isFeatured;
       return vehicle.category === active;
     });

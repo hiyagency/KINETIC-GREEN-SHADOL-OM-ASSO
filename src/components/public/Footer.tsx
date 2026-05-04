@@ -4,12 +4,12 @@ import type { StoreSettings } from "@/lib/types";
 
 export function Footer({ settings }: { settings: StoreSettings }) {
   return (
-    <footer className="bg-[#0b100c] pb-24 text-white md:pb-0">
+    <footer className="bg-[#0b100c] text-white">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:px-6 lg:grid-cols-[1.2fr_0.8fr]">
         <div>
           <p className="text-sm font-black uppercase tracking-[0.2em] text-[#21c44d]">{settings.storeName}</p>
           <h2 className="mt-4 max-w-3xl text-4xl font-black leading-tight">
-            Official Kinetic Green products. Local Shahdol enquiries. No online payment.
+            Non-registration electric two-wheelers. Local Shahdol enquiries. Easy ownership support.
           </h2>
           <p className="mt-4 max-w-2xl text-sm leading-7 text-white/68">{settings.footerCopy}</p>
           <div className="mt-6"><ContactActions settings={settings} /></div>
@@ -23,8 +23,14 @@ export function Footer({ settings }: { settings: StoreSettings }) {
           <div>
             <h3 className="text-base font-black text-white">Pages</h3>
             <div className="mt-3 grid grid-cols-2 gap-2">
-              {["No Licence EVs", "Vehicles", "FAQ", "Policies", "Contact"].map((label) => (
-                <Link key={label} href={`/${label.toLowerCase().replaceAll(" ", "-").replace("no-licence-evs", "no-licence-ev")}`} className="hover:text-white">
+              {[
+                ["No-License EVs", "/no-licence-ev"],
+                ["Vehicles", "/vehicles"],
+                ["FAQ", "/faq"],
+                ["Policies", "/policies"],
+                ["Contact", "/contact"],
+              ].map(([label, href]) => (
+                <Link key={label} href={href} className="hover:text-white">
                   {label}
                 </Link>
               ))}

@@ -9,7 +9,7 @@ import { phoneHref } from "@/lib/utils";
 
 const nav = [
   ["Home", "/"],
-  ["No Licence EVs", "/no-licence-ev"],
+  ["No-License EVs", "/no-licence-ev"],
   ["Vehicles", "/vehicles"],
   ["About", "/about"],
   ["FAQ", "/faq"],

@@ -5,8 +5,59 @@ import type { FAQ, GalleryItem, Policy, Product, StoreSettings } from "@/lib/typ
 import { createClient } from "@/lib/supabase/server";
 import { hasSupabaseEnv } from "@/lib/supabase/env";
 
+const DISALLOWED_PUBLIC_PRODUCT_TERMS = [
+  "3 wheeler",
+  "three wheeler",
+  "auto",
+  "rickshaw",
+  "commercial",
+  "cargo",
+  "passenger",
+  "rto vehicle",
+  "safar",
+  "flatbed",
+];
+
 function asStringArray(value: unknown): string[] {
   return Array.isArray(value) ? value.map(String) : [];
+}
+
+function hasDisallowedPublicTerm(product: Product) {
+  const text = [
+    product.name,
+    product.slug,
+    product.category,
+    product.shortDescription,
+    product.longDescription,
+  ]
+    .join(" ")
+    .toLowerCase();
+
+  return DISALLOWED_PUBLIC_PRODUCT_TERMS.some((term) => text.includes(term));
+}
+
+function isPublicTwoWheelerProduct(product: Product) {
+  return (
+    product.isPublished &&
+    product.noLicenceRequired &&
+    product.noRtoRequired &&
+    !hasDisallowedPublicTerm(product)
+  );
+}
+
+function sanitizePublicProduct(product: Product): Product {
+  return {
+    ...product,
+    category: "Non-Registration Two-Wheeler",
+    shortDescription: `${product.name} is available at KINETIC GREEN Shahdol for students and everyday local rides.`,
+    longDescription:
+      "A customer-friendly electric two-wheeler for simple local travel, easy ownership, and daily Shahdol rides.",
+    eligibilityNote:
+      "Non-registration electric two-wheelers available at our Shahdol showroom.",
+    disclaimerText:
+      "Visit the showroom or enquire to confirm the best model for your need.",
+    importStatus: "",
+  };
 }
 
 function mapProduct(row: Record<string, unknown>): Product {
@@ -56,15 +107,18 @@ function mapProduct(row: Record<string, unknown>): Product {
 }
 
 export async function getProducts() {
-  if (!hasSupabaseEnv()) return products;
+  if (!hasSupabaseEnv()) return products.filter(isPublicTwoWheelerProduct).map(sanitizePublicProduct);
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("products")
     .select("*")
     .eq("is_published", true)
     .order("sort_order", { ascending: true });
-  if (error || !data) return products;
-  return data.map((row) => mapProduct(row as Record<string, unknown>));
+  if (error || !data) return products.filter(isPublicTwoWheelerProduct).map(sanitizePublicProduct);
+  return data
+    .map((row) => mapProduct(row as Record<string, unknown>))
+    .filter(isPublicTwoWheelerProduct)
+    .map(sanitizePublicProduct);
 }
 
 export async function getAllProductsForAdmin() {
@@ -97,10 +151,7 @@ export async function getVehicleBySlug(slug: string) {
 
 export async function getEligibleProducts() {
   const all = await getProducts();
-  return all.filter(
-    (product) =>
-      product.noLicenceRequired && product.noRtoRequired && product.isPublished,
-  );
+  return all.filter(isPublicTwoWheelerProduct);
 }
 
 export async function getEligibleVehicles() {

@@ -12,15 +12,13 @@ export function ProductFilters({
   settings: StoreSettings;
 }) {
   const categories = Array.from(new Set(products.map((product) => product.category)));
-  const filters = ["All", ...categories, "No Licence", "No RTO", "Student Friendly", "Low Speed"];
+  const filters = ["All", ...categories, "Student Friendly", "Daily Ride EV"];
   const [active, setActive] = useState("All");
   const filtered = useMemo(() => {
     return products.filter((product) => {
       if (active === "All") return true;
-      if (active === "No Licence") return product.noLicenceRequired;
-      if (active === "No RTO") return product.noRtoRequired;
       if (active === "Student Friendly") return product.studentFriendly;
-      if (active === "Low Speed") return product.lowSpeedVehicle;
+      if (active === "Daily Ride EV") return product.lowSpeedVehicle;
       return product.category === active;
     });
   }, [active, products]);

@@ -20,12 +20,12 @@ export function whatsappNumber(settings: StoreSettings) {
 
 export function whatsappMessage(kind: "product" | "licence" | "general", product?: Product) {
   if (kind === "product" && product) {
-    return `नमस्ते Kinetic Green Shahdol, मुझे ${product.name} के बारे में जानकारी चाहिए. कृपया price, availability और test ride details बताएं.`;
+    return `Hello Kinetic Green Shahdol, I want details for ${product.name}. Please share price, availability, finance and test ride details.`;
   }
   if (kind === "licence") {
-    return "नमस्ते Kinetic Green Shahdol, मुझे बिना licence और बिना RTO वाले EV models के बारे में जानकारी चाहिए.";
+    return "Hello Kinetic Green Shahdol, I want details for non-registration electric two-wheelers for students and daily local rides.";
   }
-  return "नमस्ते Kinetic Green Shahdol, मुझे electric scooter के बारे में जानकारी चाहिए.";
+  return "Hello Kinetic Green Shahdol, I want details for electric two-wheelers available at the Shahdol showroom.";
 }
 
 export function whatsappHref(settings: StoreSettings, message: string) {
@@ -34,7 +34,7 @@ export function whatsappHref(settings: StoreSettings, message: string) {
 
 export function whatsappUrl(catalogUrl: string, productName?: string) {
   const message = productName
-    ? `नमस्ते Kinetic Green Shahdol, मुझे ${productName} के बारे में जानकारी चाहिए.`
+    ? `Hello Kinetic Green Shahdol, I want details for ${productName}.`
     : whatsappMessage("general");
   return catalogUrl || `https://wa.me/919243016493?text=${encodeURIComponent(message)}`;
 }
