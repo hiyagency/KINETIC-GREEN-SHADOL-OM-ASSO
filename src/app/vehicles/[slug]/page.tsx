@@ -17,7 +17,11 @@ export default async function VehicleDetailPage({ params }: { params: Promise<{ 
     getProductBySlug(slug),
   ]);
   if (!product) notFound();
+<<<<<<< HEAD
   const similar = Array.from(new Map(allProducts.filter((item) => item.slug !== product.slug && item.category === product.category).map((item) => [item.slug, item])).values()).slice(0, 4);
+=======
+  const similar = allProducts.filter((item) => item.slug !== product.slug).slice(0, 3);
+>>>>>>> d98ef1a (Refine public showroom content and 360 viewer)
 
   return (
     <div>
@@ -37,24 +41,57 @@ export default async function VehicleDetailPage({ params }: { params: Promise<{ 
       </section>
 
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
+<<<<<<< HEAD
         <ProductExperience product={product} />
+=======
+        <div className="grid gap-5 lg:grid-cols-[1fr_0.7fr]">
+          <Viewer360 product={product} />
+          <div className="grid gap-4 rounded-[20px] border border-[#dbe8db] bg-white p-5">
+            <h2 className="text-3xl font-black text-[#101510]">Quick specs</h2>
+            {[
+              ["Price", product.priceLabel],
+              ["Range", product.rangeLabel],
+              ["Top speed", product.topSpeed],
+              ["Motor power", product.motorPower],
+              ["Battery", product.batteryType || product.specifications["Battery Capacity"]],
+              ["Charging", product.chargingTime],
+              ["Warranty", product.warranty],
+            ].map(([label, value]) => (
+              <div key={label} className="flex justify-between gap-4 border-b border-[#edf3ed] pb-3 text-sm">
+                <span className="font-bold text-[#657067]">{label}</span>
+                <span className="text-right font-black text-[#101510]">{value || "Confirm with showroom"}</span>
+              </div>
+            ))}
+            {product.brochureUrl ? <a href={product.brochureUrl} className="rounded-xl bg-[#101510] px-4 py-3 text-center text-sm font-black text-white">Download brochure</a> : null}
+          </div>
+        </div>
+>>>>>>> d98ef1a (Refine public showroom content and 360 viewer)
       </section>
 
       <section className="bg-[#eef8ef] py-12">
         <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[0.8fr_1fr]">
           <div>
+<<<<<<< HEAD
             <h2 className="text-4xl font-black text-[#101510]">No Licence / No RTO eligibility</h2>
             <p className="mt-4 text-base leading-7 text-[#526057]">No Licence Required • No RTO Registration Required. Perfect for students and daily city rides.</p>
+=======
+            <h2 className="text-4xl font-black text-[#101510]">Non-registration two-wheeler support</h2>
+            <p className="mt-4 text-base leading-7 text-[#526057]">{product.eligibilityNote}</p>
+>>>>>>> d98ef1a (Refine public showroom content and 360 viewer)
             <p className="mt-4 rounded-2xl bg-white p-5 text-sm font-semibold leading-6 text-[#526057]">{product.disclaimerText || HINGLISH_DISCLAIMER}</p>
           </div>
           <div className="rounded-[20px] border border-[#dbe8db] bg-white p-5">
-            <h3 className="text-2xl font-black text-[#101510]">Variants & colors</h3>
+            <h3 className="text-2xl font-black text-[#101510]">Colours</h3>
             <div className="mt-5 flex flex-wrap gap-3">
               {product.colors.length ? product.colors.map((color) => (
                 <span key={`${color.name}-${color.value}`} className="inline-flex items-center gap-2 rounded-full border border-[#dbe8db] px-3 py-2 text-sm font-black">
                   <span className="h-5 w-5 rounded-full border" style={{ background: color.value }} /> {color.name}
                 </span>
+<<<<<<< HEAD
               )) : <p className="text-sm font-semibold text-[#526057]">Available colours may vary. Call or WhatsApp us for today&rsquo;s options.</p>}
+=======
+              )) : <p className="text-sm font-semibold text-[#526057]">Visit the showroom to see available colours.</p>}
+>>>>>>> d98ef1a (Refine public showroom content and 360 viewer)
             </div>
           </div>
         </div>
@@ -73,7 +110,11 @@ export default async function VehicleDetailPage({ params }: { params: Promise<{ 
                 <h3 className="text-lg font-black">{highlight.title}</h3>
                 <p className="mt-2 text-sm leading-6 text-[#526057]">{highlight.description}</p>
               </div>
+<<<<<<< HEAD
             )) : <p className="font-semibold text-[#526057]">Highlights are shared by showroom team based on current display model.</p>}
+=======
+            )) : <p className="font-semibold text-[#526057]">Visit the showroom to understand the key features.</p>}
+>>>>>>> d98ef1a (Refine public showroom content and 360 viewer)
           </div>
         </div>
         <div>
@@ -92,8 +133,13 @@ export default async function VehicleDetailPage({ params }: { params: Promise<{ 
       <section className="bg-[#0b100c] py-12 text-white">
         <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[0.8fr_1fr]">
           <div>
+<<<<<<< HEAD
             <h2 className="text-4xl font-black">Get price, availability और test ride details.</h2>
             <p className="mt-4 text-sm leading-7 text-white/68">Enquire now for latest price, colour availability, warranty support, and showroom visit details.</p>
+=======
+            <h2 className="text-4xl font-black">Get price, availability and test ride details.</h2>
+            <p className="mt-4 text-sm leading-7 text-white/68">Enquire now and our team will help you choose the right model.</p>
+>>>>>>> d98ef1a (Refine public showroom content and 360 viewer)
           </div>
           <EnquiryForm vehicles={allProducts} selectedVehicle={product.name} />
         </div>
@@ -101,7 +147,7 @@ export default async function VehicleDetailPage({ params }: { params: Promise<{ 
 
       {similar.length ? (
         <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
-          <h2 className="text-3xl font-black text-[#101510]">Similar products</h2>
+          <h2 className="text-3xl font-black text-[#101510]">More non-registration two-wheelers</h2>
           <div className="mt-5 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
             {similar.map((item) => <ProductCard key={item.id} product={item} settings={settings} />)}
           </div>

@@ -6,6 +6,7 @@ import type { Product, StoreSettings } from "@/lib/types";
 
 export function ProductFilters({ products, settings }: { products: Product[]; settings: StoreSettings }) {
   const categories = Array.from(new Set(products.map((product) => product.category)));
+<<<<<<< HEAD
   const preferred = ["Electric Scooter", "Non-RTO Two-Wheeler", "Student Friendly EV", "Lithium Battery Scooter"];
   const filters = ["All", ...preferred.filter((c) => categories.includes(c)), ...categories.filter((c) => !preferred.includes(c)), "No Licence", "No RTO", "Student Friendly"];
   const [active, setActive] = useState("All");
@@ -18,6 +19,18 @@ export function ProductFilters({ products, settings }: { products: Product[]; se
     if (active === "Low Speed") return product.lowSpeedVehicle;
     return product.category === active;
   }), [active, products]);
+=======
+  const filters = ["All", ...categories, "Student Friendly", "Daily Ride EV"];
+  const [active, setActive] = useState("All");
+  const filtered = useMemo(() => {
+    return products.filter((product) => {
+      if (active === "All") return true;
+      if (active === "Student Friendly") return product.studentFriendly;
+      if (active === "Daily Ride EV") return product.lowSpeedVehicle;
+      return product.category === active;
+    });
+  }, [active, products]);
+>>>>>>> d98ef1a (Refine public showroom content and 360 viewer)
 
   return (
     <div>

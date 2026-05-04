@@ -1,4 +1,8 @@
-import { HINGLISH_DISCLAIMER } from "@/lib/constants";
+import {
+  HINGLISH_DISCLAIMER,
+  INSTAGRAM_PROFILE_URL,
+  PUBLIC_HERO_TITLE,
+} from "@/lib/constants";
 import importedProducts from "@/lib/data/official-products.json";
 import type { FAQ, GalleryItem, Policy, Product, StoreSettings } from "@/lib/types";
 
@@ -10,21 +14,21 @@ export const storeSettings: StoreSettings = {
   whatsappNumber: "919243016493",
   whatsappUrl:
     "https://www.whatsapp.com/catalog/919243016493/?app_absent=0&utm_source=ig",
-  instagramUrl: "https://www.instagram.com/kinetic_green_shahdol/",
+  instagramUrl: INSTAGRAM_PROFILE_URL,
   facebookUrl: "",
   googleMapsEmbed: "",
   googleMapsUrl: "",
   storeHours: "10:00 AM - 8:00 PM",
-  heroHeadline: "बिना लाइसेंस, बिना RTO — शाहडोल की स्मार्ट इलेक्ट्रिक राइड",
+  heroHeadline: PUBLIC_HERO_TITLE,
   heroSubheadline:
-    "Eligible low-speed Kinetic Green EVs for students, daily riders and local commuters.",
+    "Non-registration electric two-wheelers available at our Shahdol showroom. Ideal for students and everyday local rides.",
   heroImageUrl: "",
   brandLine: "Planet @ Our Heart",
   footerCopy:
-    "Kinetic Green Shahdol by Om Associates. Official products, local enquiry, test ride and showroom support.",
-  seoTitle: "Kinetic Green Shahdol | No Licence EV Options",
+    "Kinetic Green Shahdol by Om Associates. Non-registration electric two-wheelers, local enquiry, test ride and showroom support.",
+  seoTitle: "Kinetic Green Shahdol | Non-Registration Electric Two-Wheelers",
   seoDescription:
-    "Official Kinetic Green product-led showroom website for Shahdol enquiries, no-licence eligible low-speed EVs, test rides and WhatsApp contact.",
+    "KINETIC GREEN Shahdol brings non-registration electric two-wheelers for students, daily local travel, test rides and WhatsApp enquiries.",
 };
 
 export const products = importedProducts as Product[];
@@ -33,92 +37,86 @@ export const vehicles = products;
 export const faqs: FAQ[] = [
   {
     id: "faq-licence",
-    question: "क्या बिना licence के EV चला सकते हैं?",
+    question: "Can students ride these electric two-wheelers?",
     answer:
+<<<<<<< HEAD
       "Listed low-speed models shown here are No Licence / No RTO friendly. Our team will confirm the exact model before delivery.",
     category: "No Licence",
+=======
+      "Yes. KINETIC GREEN Shahdol offers non-registration electric two-wheelers that are ideal for students, tuition, college, and everyday local rides.",
+    category: "Students",
+>>>>>>> d98ef1a (Refine public showroom content and 360 viewer)
     productId: null,
     isPublished: true,
     sortOrder: 1,
   },
   {
     id: "faq-rto",
-    question: "क्या RTO registration जरूरी है?",
+    question: "Do you have non-registration electric two-wheelers?",
     answer:
+<<<<<<< HEAD
       "Listed low-speed models on this site are shown as No RTO. Call us for current model and colour availability.",
     category: "No Licence",
+=======
+      "Yes. Non-registration electric two-wheelers are available at our Shahdol showroom. Visit or enquire and our team will help you choose the right model.",
+    category: "Products",
+>>>>>>> d98ef1a (Refine public showroom content and 360 viewer)
     productId: null,
     isPublished: true,
     sortOrder: 2,
   },
   {
     id: "faq-models",
-    question: "कौनसे models no licence category में आते हैं?",
+    question: "Which model should I choose?",
     answer:
+<<<<<<< HEAD
       "No Licence EV page par student-friendly local rides dikhte hain. Showroom team aapko best option suggest karegi.",
+=======
+      "Tell us your daily travel need, rider age, route, and budget. Our showroom team will suggest a suitable non-registration electric two-wheeler.",
+>>>>>>> d98ef1a (Refine public showroom content and 360 viewer)
     category: "Products",
     productId: null,
     isPublished: true,
     sortOrder: 3,
   },
   {
-    id: "faq-students",
-    question: "Students के लिए कौनसा model best है?",
+    id: "faq-test-ride",
+    question: "How can I book a test ride?",
     answer:
-      "Students के लिए low-speed, easy handling और local commute वाली requirements के हिसाब से showroom team model suggest करेगी.",
-    category: "Students",
+      "Call, WhatsApp, or send the enquiry form. The KINETIC GREEN Shahdol team will help with visit timing and availability.",
+    category: "Enquiry",
     productId: null,
     isPublished: true,
     sortOrder: 4,
   },
   {
-    id: "faq-test-ride",
-    question: "Test ride कैसे book करें?",
+    id: "faq-price",
+    question: "How can I get price and finance details?",
     answer:
-      "Call, WhatsApp या enquiry form से test ride request भेजें. Showroom team slot confirm करेगी.",
+      "Use WhatsApp, call the showroom, or send an enquiry. Finance and cash options are both available at the showroom.",
     category: "Enquiry",
     productId: null,
     isPublished: true,
     sortOrder: 5,
   },
   {
-    id: "faq-price",
-    question: "Price कैसे पता करें?",
+    id: "faq-warranty",
+    question: "What battery warranty support is available?",
     answer:
-      "Product page पर Get Price या WhatsApp button दबाएं. Final price, offer और availability showroom से confirm होगी.",
-    category: "Enquiry",
+      "Ride with confidence with battery warranty support for up to 3 years.",
+    category: "Warranty",
     productId: null,
     isPublished: true,
     sortOrder: 6,
   },
   {
-    id: "faq-warranty",
-    question: "Warranty क्या मिलेगी?",
-    answer:
-      "Warranty details model और current company policy पर depend करती हैं. Purchase से पहले showroom से written details confirm करें.",
-    category: "Warranty",
-    productId: null,
-    isPublished: true,
-    sortOrder: 7,
-  },
-  {
-    id: "faq-battery",
-    question: "Battery कितने समय चलेगी?",
-    answer:
-      "Range, battery life और charging usage model, riding pattern और maintenance पर depend करते हैं.",
-    category: "Battery",
-    productId: null,
-    isPublished: true,
-    sortOrder: 8,
-  },
-  {
     id: "faq-location",
-    question: "Showroom कहाँ है?",
+    question: "Where is the showroom?",
     answer: "Om Associate, Kotma Tiraha, Badhganga Road, Shahdol (M.P).",
     category: "Store",
     productId: null,
     isPublished: true,
-    sortOrder: 9,
+    sortOrder: 7,
   },
 ];
 
@@ -128,14 +126,14 @@ export const policies: Policy[] = [
     title: "No Online Payment",
     slug: "no-online-payment",
     content:
-      "This website does not collect online payments. All booking, price, finance, delivery, warranty, refund and cancellation details must be confirmed directly with Kinetic Green Shahdol.",
+      "This website does not collect online payments. Visit Kinetic Green Shahdol for booking, price, finance, delivery, warranty, refund and cancellation support.",
     officialReferenceUrl: "",
     isPublished: true,
   },
   {
     id: "policy-eligibility",
-    title: "Licence / RTO Eligibility Disclaimer",
-    slug: "licence-rto-disclaimer",
+    title: "Non-Registration Two-Wheeler Support",
+    slug: "non-registration-two-wheeler-support",
     content: HINGLISH_DISCLAIMER,
     officialReferenceUrl: "",
     isPublished: true,
@@ -155,7 +153,11 @@ export const gallery: GalleryItem[] = [
   {
     id: "gallery-1",
     imageUrl: "",
+<<<<<<< HEAD
     caption: "Showroom photos",
+=======
+    caption: "Kinetic Green Shahdol showroom",
+>>>>>>> d98ef1a (Refine public showroom content and 360 viewer)
     type: "showroom",
     isFeatured: true,
     sortOrder: 1,

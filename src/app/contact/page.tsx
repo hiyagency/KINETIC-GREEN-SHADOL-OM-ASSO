@@ -22,9 +22,9 @@ export default async function ContactPage() {
           {settings.phones.map((phone) => (
             <a key={phone} className="block font-black text-[#13a538]" href={phoneHref(phone)}>{phone}</a>
           ))}
-          <a className="block font-black text-[#13a538]" href={settings.whatsappUrl}>WhatsApp Catalog</a>
+          <a className="block font-black text-[#13a538]" href={settings.whatsappUrl}>WhatsApp</a>
           <a className="block font-black text-[#13a538]" href={settings.instagramUrl}>Instagram</a>
-          <p>Facebook: {settings.facebookUrl || "Editable placeholder"}</p>
+          {settings.facebookUrl ? <p>Facebook: {settings.facebookUrl}</p> : null}
           <p>Hours: {settings.storeHours}</p>
         </div>
         <MapPlaceholder settings={settings} />

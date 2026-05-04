@@ -1,7 +1,21 @@
-import { CalendarCheck, Camera, MapPin, MessageCircle, Phone, Send } from "lucide-react";
+import { CalendarCheck, MapPin, MessageCircle, Phone, Send } from "lucide-react";
 import { ButtonLink } from "@/components/ui/Button";
 import type { Product, StoreSettings } from "@/lib/types";
 import { directionsHref, phoneHref, whatsappHref, whatsappMessage } from "@/lib/utils";
+
+function InstagramLogo() {
+  return (
+    <span
+      aria-hidden="true"
+      className="inline-flex size-4 items-center justify-center rounded-[5px] bg-[radial-gradient(circle_at_30%_107%,#fdf497_0%,#fdf497_5%,#fd5949_45%,#d6249f_60%,#285aeb_90%)]"
+    >
+      <span className="relative block size-2.5 rounded-[3px] border border-white">
+        <span className="absolute left-1/2 top-1/2 block size-1 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white" />
+        <span className="absolute right-[1px] top-[1px] block size-[1.5px] rounded-full bg-white" />
+      </span>
+    </span>
+  );
+}
 
 export function ContactActions({
   settings,
@@ -34,7 +48,7 @@ export function ContactActions({
         <MapPin size={16} /> Visit Showroom
       </ButtonLink>
       <ButtonLink href={settings.instagramUrl} variant="light">
-        <Camera size={16} /> Instagram
+        <InstagramLogo /> Instagram
       </ButtonLink>
     </div>
   );

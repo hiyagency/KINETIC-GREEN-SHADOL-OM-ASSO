@@ -5,10 +5,24 @@ import type { FAQ, GalleryItem, Policy, Product, StoreSettings } from "@/lib/typ
 import { createClient } from "@/lib/supabase/server";
 import { hasSupabaseEnv } from "@/lib/supabase/env";
 
+const DISALLOWED_PUBLIC_PRODUCT_TERMS = [
+  "3 wheeler",
+  "three wheeler",
+  "auto",
+  "rickshaw",
+  "commercial",
+  "cargo",
+  "passenger",
+  "rto vehicle",
+  "safar",
+  "flatbed",
+];
+
 function asStringArray(value: unknown): string[] {
   return Array.isArray(value) ? value.map(String) : [];
 }
 
+<<<<<<< HEAD
 const EXCLUDED_CATEGORY_PATTERNS = [/three\s*wheel/i, /auto/i, /rickshaw/i, /cargo/i, /commercial/i, /passenger/i];
 const TWO_WHEELER_CATEGORY_MAP: Record<string, string> = {
   "E-Luna": "Non-RTO Two-Wheeler",
@@ -31,6 +45,44 @@ function cleanCustomerCopy(value: string, fallback = "") {
     .replace(/Final availability, price and eligibility must be confirmed with the showroom\.?/gi, "Call or WhatsApp us for today’s stock, colours, and latest price.")
     .replace(/No-licence\/no-RTO eligibility is not enabled for this imported product until admin verifies it\.?/gi, "No Licence and No RTO details are shared by our showroom team.")
     .trim() || fallback;
+=======
+function hasDisallowedPublicTerm(product: Product) {
+  const text = [
+    product.name,
+    product.slug,
+    product.category,
+    product.shortDescription,
+    product.longDescription,
+  ]
+    .join(" ")
+    .toLowerCase();
+
+  return DISALLOWED_PUBLIC_PRODUCT_TERMS.some((term) => text.includes(term));
+}
+
+function isPublicTwoWheelerProduct(product: Product) {
+  return (
+    product.isPublished &&
+    product.noLicenceRequired &&
+    product.noRtoRequired &&
+    !hasDisallowedPublicTerm(product)
+  );
+}
+
+function sanitizePublicProduct(product: Product): Product {
+  return {
+    ...product,
+    category: "Non-Registration Two-Wheeler",
+    shortDescription: `${product.name} is available at KINETIC GREEN Shahdol for students and everyday local rides.`,
+    longDescription:
+      "A customer-friendly electric two-wheeler for simple local travel, easy ownership, and daily Shahdol rides.",
+    eligibilityNote:
+      "Non-registration electric two-wheelers available at our Shahdol showroom.",
+    disclaimerText:
+      "Visit the showroom or enquire to confirm the best model for your need.",
+    importStatus: "",
+  };
+>>>>>>> d98ef1a (Refine public showroom content and 360 viewer)
 }
 
 function mapProduct(row: Record<string, unknown>): Product {
@@ -80,21 +132,33 @@ function mapProduct(row: Record<string, unknown>): Product {
 }
 
 export async function getProducts() {
+<<<<<<< HEAD
   if (!hasSupabaseEnv()) {
     return products
       .map((product) => ({ ...product, category: normalizeCategory(product.category) }))
       .filter((product) => product.isPublished && isTwoWheelerCategory(product.category));
   }
+=======
+  if (!hasSupabaseEnv()) return products.filter(isPublicTwoWheelerProduct).map(sanitizePublicProduct);
+>>>>>>> d98ef1a (Refine public showroom content and 360 viewer)
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("products")
     .select("*")
     .eq("is_published", true)
     .order("sort_order", { ascending: true });
+<<<<<<< HEAD
   if (error || !data) return products.filter((product) => product.isPublished && isTwoWheelerCategory(product.category));
   return data
     .map((row) => mapProduct(row as Record<string, unknown>))
     .filter((product) => isTwoWheelerCategory(product.category));
+=======
+  if (error || !data) return products.filter(isPublicTwoWheelerProduct).map(sanitizePublicProduct);
+  return data
+    .map((row) => mapProduct(row as Record<string, unknown>))
+    .filter(isPublicTwoWheelerProduct)
+    .map(sanitizePublicProduct);
+>>>>>>> d98ef1a (Refine public showroom content and 360 viewer)
 }
 
 export async function getAllProductsForAdmin() {
@@ -127,10 +191,7 @@ export async function getVehicleBySlug(slug: string) {
 
 export async function getEligibleProducts() {
   const all = await getProducts();
-  return all.filter(
-    (product) =>
-      product.noLicenceRequired && product.noRtoRequired && product.isPublished,
-  );
+  return all.filter(isPublicTwoWheelerProduct);
 }
 
 export async function getEligibleVehicles() {
