@@ -9,19 +9,15 @@ export function Footer({ settings }: { settings: StoreSettings }) {
         <div>
           <p className="text-sm font-black uppercase tracking-[0.2em] text-[#21c44d]">{settings.storeName}</p>
           <h2 className="mt-4 max-w-3xl text-4xl font-black leading-tight">
-<<<<<<< HEAD
-            A Practical Ride Parents Can Trust
-=======
             Non-registration electric two-wheelers. Local Shahdol enquiries. Easy ownership support.
->>>>>>> d98ef1a (Refine public showroom content and 360 viewer)
           </h2>
-          <p className="mt-4 max-w-2xl text-sm leading-7 text-white/68">Save daily petrol cost with easy electric rides for college, tuition, market and office travel. Warranty support available with direct help from Om Associate Shahdol.</p>
+          <p className="mt-4 max-w-2xl text-sm leading-7 text-white/68">{settings.footerCopy}</p>
           <div className="mt-6"><ContactActions settings={settings} /></div>
         </div>
         <div className="grid gap-6 text-sm text-white/72">
           <div>
             <h3 className="text-base font-black text-white">Showroom</h3>
-            <p className="mt-3 leading-6">Om Associate, Kotma Tiraha, Badhganga Road, Shahdol</p>
+            <p className="mt-3 leading-6">{settings.address}</p>
             <p className="mt-2">{settings.storeHours}</p>
           </div>
           <div>

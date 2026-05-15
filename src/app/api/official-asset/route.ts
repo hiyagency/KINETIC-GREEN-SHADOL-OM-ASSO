@@ -5,7 +5,11 @@ export const runtime = "nodejs";
 
 export async function GET(request: NextRequest) {
   const url = request.nextUrl.searchParams.get("url");
-  if (!url || !url.startsWith("https://www.kineticgreen.com/")) {
+  if (
+    !url ||
+    (!url.startsWith("https://www.kineticgreen.com/") &&
+      !url.startsWith("https://kineticgreen.com/"))
+  ) {
     return new Response("Invalid asset URL", { status: 400 });
   }
 

@@ -5,6 +5,16 @@ import type { FAQ, GalleryItem, Policy, Product, StoreSettings } from "@/lib/typ
 import { createClient } from "@/lib/supabase/server";
 import { hasSupabaseEnv } from "@/lib/supabase/env";
 
+const ALLOWED_PUBLIC_PRODUCT_IDS = new Set(["1", "2", "3", "4", "5", "6"]);
+const ALLOWED_PUBLIC_PRODUCT_SLUGS = new Set([
+  "e-luna-go",
+  "e-luna-plus",
+  "e-luna-pro",
+  "e-luna-prime",
+  "e-zulu-signature-edition",
+  "zing",
+]);
+
 const DISALLOWED_PUBLIC_PRODUCT_TERMS = [
   "3 wheeler",
   "three wheeler",
@@ -22,30 +32,6 @@ function asStringArray(value: unknown): string[] {
   return Array.isArray(value) ? value.map(String) : [];
 }
 
-<<<<<<< HEAD
-const EXCLUDED_CATEGORY_PATTERNS = [/three\s*wheel/i, /auto/i, /rickshaw/i, /cargo/i, /commercial/i, /passenger/i];
-const TWO_WHEELER_CATEGORY_MAP: Record<string, string> = {
-  "E-Luna": "Non-RTO Two-Wheeler",
-  Scooters: "Electric Scooter",
-};
-
-function isTwoWheelerCategory(category: string) {
-  if (!category) return false;
-  return !EXCLUDED_CATEGORY_PATTERNS.some((pattern) => pattern.test(category));
-}
-
-function normalizeCategory(category: string) {
-  return TWO_WHEELER_CATEGORY_MAP[category] || category;
-}
-
-function cleanCustomerCopy(value: string, fallback = "") {
-  return value
-    .replace(/Official Kinetic Green product data imported from the live product API\.?/gi, "Simple electric ride for local use in Shahdol.")
-    .replace(/Official Kinetic Green product data imported for Kinetic Green Shahdol\.?/gi, "Available through Om Associate Shahdol.")
-    .replace(/Final availability, price and eligibility must be confirmed with the showroom\.?/gi, "Call or WhatsApp us for today’s stock, colours, and latest price.")
-    .replace(/No-licence\/no-RTO eligibility is not enabled for this imported product until admin verifies it\.?/gi, "No Licence and No RTO details are shared by our showroom team.")
-    .trim() || fallback;
-=======
 function hasDisallowedPublicTerm(product: Product) {
   const text = [
     product.name,
@@ -63,26 +49,10 @@ function hasDisallowedPublicTerm(product: Product) {
 function isPublicTwoWheelerProduct(product: Product) {
   return (
     product.isPublished &&
-    product.noLicenceRequired &&
-    product.noRtoRequired &&
+    (ALLOWED_PUBLIC_PRODUCT_IDS.has(product.officialId || "") ||
+      ALLOWED_PUBLIC_PRODUCT_SLUGS.has(product.slug)) &&
     !hasDisallowedPublicTerm(product)
   );
-}
-
-function sanitizePublicProduct(product: Product): Product {
-  return {
-    ...product,
-    category: "Non-Registration Two-Wheeler",
-    shortDescription: `${product.name} is available at KINETIC GREEN Shahdol for students and everyday local rides.`,
-    longDescription:
-      "A customer-friendly electric two-wheeler for simple local travel, easy ownership, and daily Shahdol rides.",
-    eligibilityNote:
-      "Non-registration electric two-wheelers available at our Shahdol showroom.",
-    disclaimerText:
-      "Visit the showroom or enquire to confirm the best model for your need.",
-    importStatus: "",
-  };
->>>>>>> d98ef1a (Refine public showroom content and 360 viewer)
 }
 
 function mapProduct(row: Record<string, unknown>): Product {
@@ -91,10 +61,10 @@ function mapProduct(row: Record<string, unknown>): Product {
     officialId: String(row.official_id || ""),
     name: String(row.name || ""),
     slug: String(row.slug || ""),
-    category: normalizeCategory(String(row.category || "")),
+    category: String(row.category || ""),
     officialUrl: String(row.official_url || ""),
-    shortDescription: cleanCustomerCopy(String(row.short_description || ""), "Easy electric ride for daily Shahdol travel."),
-    longDescription: cleanCustomerCopy(String(row.long_description || ""), "Visit the showroom for complete details and delivery timeline."),
+    shortDescription: String(row.short_description || ""),
+    longDescription: String(row.long_description || ""),
     heroImageUrl: String(row.hero_image_url || ""),
     galleryImages: asStringArray(row.gallery_images),
     viewer360Type:
@@ -121,7 +91,7 @@ function mapProduct(row: Record<string, unknown>): Product {
     noRtoRequired: Boolean(row.no_rto_required),
     lowSpeedVehicle: Boolean(row.low_speed_vehicle),
     studentFriendly: Boolean(row.student_friendly),
-    eligibilityNote: cleanCustomerCopy(String(row.eligibility_note || ""), "No Licence Required • No RTO Registration Required."),
+    eligibilityNote: String(row.eligibility_note || ""),
     disclaimerText: String(row.disclaimer_text || ""),
     brochureUrl: String(row.brochure_url || ""),
     isFeatured: Boolean(row.is_featured),
@@ -132,37 +102,11 @@ function mapProduct(row: Record<string, unknown>): Product {
 }
 
 export async function getProducts() {
-<<<<<<< HEAD
-  if (!hasSupabaseEnv()) {
-    return products
-      .map((product) => ({ ...product, category: normalizeCategory(product.category) }))
-      .filter((product) => product.isPublished && isTwoWheelerCategory(product.category));
-  }
-=======
-  if (!hasSupabaseEnv()) return products.filter(isPublicTwoWheelerProduct).map(sanitizePublicProduct);
->>>>>>> d98ef1a (Refine public showroom content and 360 viewer)
-  const supabase = await createClient();
-  const { data, error } = await supabase
-    .from("products")
-    .select("*")
-    .eq("is_published", true)
-    .order("sort_order", { ascending: true });
-<<<<<<< HEAD
-  if (error || !data) return products.filter((product) => product.isPublished && isTwoWheelerCategory(product.category));
-  return data
-    .map((row) => mapProduct(row as Record<string, unknown>))
-    .filter((product) => isTwoWheelerCategory(product.category));
-=======
-  if (error || !data) return products.filter(isPublicTwoWheelerProduct).map(sanitizePublicProduct);
-  return data
-    .map((row) => mapProduct(row as Record<string, unknown>))
-    .filter(isPublicTwoWheelerProduct)
-    .map(sanitizePublicProduct);
->>>>>>> d98ef1a (Refine public showroom content and 360 viewer)
+  return products.filter(isPublicTwoWheelerProduct).sort((a, b) => a.sortOrder - b.sortOrder);
 }
 
 export async function getAllProductsForAdmin() {
-  if (!hasSupabaseEnv()) return products.map((product) => ({ ...product, category: normalizeCategory(product.category) }));
+  if (!hasSupabaseEnv()) return products;
   const supabase = await createClient();
   const { data, error } = await supabase
     .from("products")
@@ -261,7 +205,7 @@ export async function getGallery(): Promise<GalleryItem[]> {
     .select("*")
     .order("sort_order", { ascending: true });
   if (error || !data) return gallery;
-  return data.map((row) => ({
+  const remoteGallery = data.map((row) => ({
     id: row.id,
     imageUrl: row.image_url || "",
     caption: row.caption || "",
@@ -269,6 +213,9 @@ export async function getGallery(): Promise<GalleryItem[]> {
     isFeatured: row.is_featured,
     sortOrder: row.sort_order,
   }));
+  const remoteUrls = new Set(remoteGallery.map((item) => item.imageUrl));
+  const localGallery = gallery.filter((item) => item.imageUrl && !remoteUrls.has(item.imageUrl));
+  return [...localGallery, ...remoteGallery].sort((a, b) => a.sortOrder - b.sortOrder);
 }
 
 export async function getEnquiriesForAdmin() {

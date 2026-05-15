@@ -1,8 +1,18 @@
+import type { Metadata } from "next";
 import { EnquiryForm } from "@/components/public/EnquiryForm";
 import { GallerySection } from "@/components/public/GallerySection";
 import { MapPlaceholder } from "@/components/public/MapPlaceholder";
 import { getGallery, getStoreSettings, getVehicles } from "@/lib/data/queries";
 import { phoneHref } from "@/lib/utils";
+
+export const metadata: Metadata = {
+  title: "Contact Kinetic Green Shahdol",
+  description:
+    "Call, WhatsApp, visit or get directions to Kinetic Green Shahdol by Om Associates for electric two-wheeler price, test ride, finance and availability.",
+  alternates: {
+    canonical: "/contact",
+  },
+};
 
 export default async function ContactPage() {
   const [settings, vehicles, gallery] = await Promise.all([

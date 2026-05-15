@@ -1,13 +1,43 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { ContactActions } from "@/components/showroom/ContactActions";
 import { EligibilityPills } from "@/components/showroom/EligibilityPills";
 import { ProductCard } from "@/components/showroom/ProductCard";
 import { ProductImage } from "@/components/showroom/ProductImage";
-import { ProductExperience } from "@/components/showroom/ProductExperience";
+import { Viewer360 } from "@/components/showroom/Viewer360";
 import { EnquiryForm } from "@/components/public/EnquiryForm";
-import { HINGLISH_DISCLAIMER } from "@/lib/constants";
+import { HINGLISH_DISCLAIMER, SITE_URL } from "@/lib/constants";
 import { getProductBySlug, getProducts, getStoreSettings } from "@/lib/data/queries";
 import { officialAssetSrc } from "@/lib/utils";
+
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const product = await getProductBySlug(slug);
+  if (!product) {
+    return {
+      title: "Electric Two-Wheeler Not Found",
+    };
+  }
+
+  const description = `${product.name} is available at Kinetic Green Shahdol for non-registration electric two-wheeler enquiries, price, test ride, finance and battery warranty support.`;
+
+  return {
+    title: `${product.name} in Shahdol`,
+    description,
+    alternates: {
+      canonical: `/vehicles/${product.slug}`,
+    },
+    openGraph: {
+      type: "website",
+      title: `${product.name} at Kinetic Green Shahdol`,
+      description,
+      url: `${SITE_URL}/vehicles/${product.slug}`,
+      images: product.heroImageUrl
+        ? [{ url: officialAssetSrc(product.heroImageUrl), alt: `${product.name} electric two-wheeler` }]
+        : [{ url: "/showroom/kinetic-green-shahdol-showroom-01.jpeg", alt: "Kinetic Green Shahdol showroom" }],
+    },
+  };
+}
 
 export default async function VehicleDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
@@ -17,14 +47,38 @@ export default async function VehicleDetailPage({ params }: { params: Promise<{ 
     getProductBySlug(slug),
   ]);
   if (!product) notFound();
-<<<<<<< HEAD
-  const similar = Array.from(new Map(allProducts.filter((item) => item.slug !== product.slug && item.category === product.category).map((item) => [item.slug, item])).values()).slice(0, 4);
-=======
   const similar = allProducts.filter((item) => item.slug !== product.slug).slice(0, 3);
->>>>>>> d98ef1a (Refine public showroom content and 360 viewer)
+  const productJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: `${product.name} at Kinetic Green Shahdol`,
+    description: product.shortDescription,
+    category: "Electric two-wheeler",
+    brand: {
+      "@type": "Brand",
+      name: "Kinetic Green",
+    },
+    image: product.heroImageUrl ? [officialAssetSrc(product.heroImageUrl)] : [`${SITE_URL}/showroom/kinetic-green-shahdol-showroom-01.jpeg`],
+    url: `${SITE_URL}/vehicles/${product.slug}`,
+    offers: {
+      "@type": "Offer",
+      priceCurrency: "INR",
+      price: product.priceLabel.replace(/\D/g, "") || undefined,
+      availability: "https://schema.org/InStock",
+      seller: {
+        "@type": "LocalBusiness",
+        name: "Kinetic Green Shahdol",
+      },
+      areaServed: "Shahdol",
+    },
+  };
 
   return (
     <div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(productJsonLd) }}
+      />
       <section className="bg-[#0b100c] text-white">
         <div className="mx-auto grid max-w-7xl gap-8 px-4 py-12 sm:px-6 lg:grid-cols-[0.9fr_1fr]">
           <div className="flex flex-col justify-center">
@@ -41,9 +95,6 @@ export default async function VehicleDetailPage({ params }: { params: Promise<{ 
       </section>
 
       <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
-<<<<<<< HEAD
-        <ProductExperience product={product} />
-=======
         <div className="grid gap-5 lg:grid-cols-[1fr_0.7fr]">
           <Viewer360 product={product} />
           <div className="grid gap-4 rounded-[20px] border border-[#dbe8db] bg-white p-5">
@@ -65,19 +116,13 @@ export default async function VehicleDetailPage({ params }: { params: Promise<{ 
             {product.brochureUrl ? <a href={product.brochureUrl} className="rounded-xl bg-[#101510] px-4 py-3 text-center text-sm font-black text-white">Download brochure</a> : null}
           </div>
         </div>
->>>>>>> d98ef1a (Refine public showroom content and 360 viewer)
       </section>
 
       <section className="bg-[#eef8ef] py-12">
         <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[0.8fr_1fr]">
           <div>
-<<<<<<< HEAD
-            <h2 className="text-4xl font-black text-[#101510]">No Licence / No RTO eligibility</h2>
-            <p className="mt-4 text-base leading-7 text-[#526057]">No Licence Required • No RTO Registration Required. Perfect for students and daily city rides.</p>
-=======
             <h2 className="text-4xl font-black text-[#101510]">Non-registration two-wheeler support</h2>
             <p className="mt-4 text-base leading-7 text-[#526057]">{product.eligibilityNote}</p>
->>>>>>> d98ef1a (Refine public showroom content and 360 viewer)
             <p className="mt-4 rounded-2xl bg-white p-5 text-sm font-semibold leading-6 text-[#526057]">{product.disclaimerText || HINGLISH_DISCLAIMER}</p>
           </div>
           <div className="rounded-[20px] border border-[#dbe8db] bg-white p-5">
@@ -87,11 +132,7 @@ export default async function VehicleDetailPage({ params }: { params: Promise<{ 
                 <span key={`${color.name}-${color.value}`} className="inline-flex items-center gap-2 rounded-full border border-[#dbe8db] px-3 py-2 text-sm font-black">
                   <span className="h-5 w-5 rounded-full border" style={{ background: color.value }} /> {color.name}
                 </span>
-<<<<<<< HEAD
-              )) : <p className="text-sm font-semibold text-[#526057]">Available colours may vary. Call or WhatsApp us for today&rsquo;s options.</p>}
-=======
               )) : <p className="text-sm font-semibold text-[#526057]">Visit the showroom to see available colours.</p>}
->>>>>>> d98ef1a (Refine public showroom content and 360 viewer)
             </div>
           </div>
         </div>
@@ -110,11 +151,7 @@ export default async function VehicleDetailPage({ params }: { params: Promise<{ 
                 <h3 className="text-lg font-black">{highlight.title}</h3>
                 <p className="mt-2 text-sm leading-6 text-[#526057]">{highlight.description}</p>
               </div>
-<<<<<<< HEAD
-            )) : <p className="font-semibold text-[#526057]">Highlights are shared by showroom team based on current display model.</p>}
-=======
             )) : <p className="font-semibold text-[#526057]">Visit the showroom to understand the key features.</p>}
->>>>>>> d98ef1a (Refine public showroom content and 360 viewer)
           </div>
         </div>
         <div>
@@ -133,13 +170,8 @@ export default async function VehicleDetailPage({ params }: { params: Promise<{ 
       <section className="bg-[#0b100c] py-12 text-white">
         <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[0.8fr_1fr]">
           <div>
-<<<<<<< HEAD
-            <h2 className="text-4xl font-black">Get price, availability और test ride details.</h2>
-            <p className="mt-4 text-sm leading-7 text-white/68">Enquire now for latest price, colour availability, warranty support, and showroom visit details.</p>
-=======
             <h2 className="text-4xl font-black">Get price, availability and test ride details.</h2>
             <p className="mt-4 text-sm leading-7 text-white/68">Enquire now and our team will help you choose the right model.</p>
->>>>>>> d98ef1a (Refine public showroom content and 360 viewer)
           </div>
           <EnquiryForm vehicles={allProducts} selectedVehicle={product.name} />
         </div>

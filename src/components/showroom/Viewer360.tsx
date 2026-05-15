@@ -1,65 +1,34 @@
 "use client";
 
-<<<<<<< HEAD
-import { useEffect, useMemo, useRef, useState } from "react";
-import { RotateCcw } from "lucide-react";
-import type { Product } from "@/lib/types";
-import { officialAssetSrc } from "@/lib/utils";
-
-export function Viewer360({ product, framesOverride }: { product: Product; framesOverride?: string[] }) {
-  const frames = useMemo(() => (framesOverride?.length ? framesOverride : product.viewer360Images) || [], [framesOverride, product.viewer360Images]);
-  const [index, setIndex] = useState(0);
-  const [dragging, setDragging] = useState(false);
-  const [ready, setReady] = useState(false);
-  const [interacting, setInteracting] = useState(false);
-  const lastX = useRef<number | null>(null);
-  const autoRotateRaf = useRef<number | null>(null);
-  const autoRotatePauseUntil = useRef(0);
-  const autoRotateLastTick = useRef(0);
-
-  useEffect(() => {
-    if (frames.length < 2) return;
-    Promise.all(frames.map((frame) => new Promise<void>((resolve) => {
-      const img = new Image();
-      img.onload = () => resolve();
-      img.onerror = () => resolve();
-      img.src = officialAssetSrc(frame);
-    }))).then(() => setReady(true));
-  }, [frames]);
-
-  useEffect(() => () => { if (autoRotateRaf.current) cancelAnimationFrame(autoRotateRaf.current); }, []);
-
-  useEffect(() => {
-    if (!ready || frames.length < 2) return;
-    const intervalMs = 110;
-    const tick = (time: number) => {
-      if (!autoRotateLastTick.current) autoRotateLastTick.current = time;
-      if (!dragging && !interacting && time >= autoRotatePauseUntil.current && time - autoRotateLastTick.current >= intervalMs) {
-        setIndex((current) => (current + 1) % frames.length);
-        autoRotateLastTick.current = time;
-      }
-      autoRotateRaf.current = requestAnimationFrame(tick);
-    };
-    autoRotateRaf.current = requestAnimationFrame(tick);
-    return () => {
-      if (autoRotateRaf.current) cancelAnimationFrame(autoRotateRaf.current);
-      autoRotateRaf.current = null;
-      autoRotateLastTick.current = 0;
-    };
-  }, [dragging, frames.length, interacting, ready]);
-=======
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { Pause, Play, RotateCcw } from "lucide-react";
+import { ChevronLeft, ChevronRight, Loader2, Pause, Play, RotateCcw } from "lucide-react";
 import type { Product } from "@/lib/types";
 import { officialAssetSrc } from "@/lib/utils";
 
-const AUTO_FRAMES_PER_SECOND = 0.85;
-const DRAG_PIXELS_PER_FRAME = 30;
-const RESUME_DELAY_MS = 1800;
+const AUTO_FRAMES_PER_SECOND = 0.7;
+const DRAG_PIXELS_PER_FRAME = 26;
+const MIN_INTERACTIVE_FRAMES = 2;
+const RESUME_DELAY_MS = 2400;
 
-export function Viewer360({ product }: { product: Product }) {
-  const frames = useMemo(() => product.viewer360Images || [], [product.viewer360Images]);
+export function Viewer360({
+  product,
+  framesOverride,
+}: {
+  product: Product;
+  framesOverride?: string[];
+}) {
+  const [selectedVariantName, setSelectedVariantName] = useState(product.variants[0]?.name || "");
+  const selectedVariant = useMemo(
+    () => product.variants.find((variant) => variant.name === selectedVariantName) || product.variants[0],
+    [product.variants, selectedVariantName],
+  );
+  const frames = useMemo(
+    () => (framesOverride?.length ? framesOverride : selectedVariant?.imageUrls?.length ? selectedVariant.imageUrls : product.viewer360Images) || [],
+    [framesOverride, product.viewer360Images, selectedVariant],
+  );
   const [index, setIndex] = useState(0);
+  const [loadedCount, setLoadedCount] = useState(0);
+  const [isReady, setIsReady] = useState(false);
   const [autoRotate, setAutoRotate] = useState(true);
   const [isDragging, setIsDragging] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
@@ -68,10 +37,8 @@ export function Viewer360({ product }: { product: Product }) {
   const dragXRef = useRef<number | null>(null);
   const resumeTimerRef = useRef<number | null>(null);
   const lastFrameTimeRef = useRef<number | null>(null);
-  const visibleFrame = useMemo(
-    () => frames[index] || product.heroImageUrl,
-    [frames, index, product.heroImageUrl],
-  );
+
+  const visibleFrame = frames[index] || product.heroImageUrl;
 
   const setFramePosition = useCallback(
     (nextPosition: number) => {
@@ -88,6 +55,28 @@ export function Viewer360({ product }: { product: Product }) {
   }, [index]);
 
   useEffect(() => {
+    if (frames.length < MIN_INTERACTIVE_FRAMES) return;
+
+    let cancelled = false;
+    let completed = 0;
+
+    frames.forEach((frame) => {
+      const image = new window.Image();
+      image.onload = image.onerror = () => {
+        if (cancelled) return;
+        completed += 1;
+        setLoadedCount(completed);
+        if (completed === frames.length) setIsReady(true);
+      };
+      image.src = officialAssetSrc(frame);
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [frames]);
+
+  useEffect(() => {
     const node = containerRef.current;
     if (!node || !("IntersectionObserver" in window)) return;
 
@@ -101,7 +90,7 @@ export function Viewer360({ product }: { product: Product }) {
   }, []);
 
   useEffect(() => {
-    if (!autoRotate || isDragging || !isVisible || frames.length < 2) return;
+    if (!autoRotate || isDragging || !isVisible || !isReady || frames.length < MIN_INTERACTIVE_FRAMES) return;
 
     let animationId = 0;
     const tick = (time: number) => {
@@ -118,12 +107,17 @@ export function Viewer360({ product }: { product: Product }) {
       window.cancelAnimationFrame(animationId);
       lastFrameTimeRef.current = null;
     };
-  }, [autoRotate, frames.length, isDragging, isVisible, setFramePosition]);
+  }, [autoRotate, frames.length, isDragging, isReady, isVisible, setFramePosition]);
 
   useEffect(() => {
     return () => {
       if (resumeTimerRef.current) window.clearTimeout(resumeTimerRef.current);
     };
+  }, []);
+
+  const pauseForInteraction = useCallback(() => {
+    setAutoRotate(false);
+    if (resumeTimerRef.current) window.clearTimeout(resumeTimerRef.current);
   }, []);
 
   const scheduleGentleResume = useCallback(() => {
@@ -133,16 +127,34 @@ export function Viewer360({ product }: { product: Product }) {
     }, RESUME_DELAY_MS);
   }, []);
 
+  const selectVariant = useCallback((variantName: string) => {
+    setSelectedVariantName(variantName);
+    framePositionRef.current = 0;
+    lastFrameTimeRef.current = null;
+    setIndex(0);
+    setLoadedCount(0);
+    setIsReady(false);
+  }, []);
+
+  const step = useCallback(
+    (direction: number) => {
+      pauseForInteraction();
+      setFramePosition(framePositionRef.current + direction);
+      scheduleGentleResume();
+    },
+    [pauseForInteraction, scheduleGentleResume, setFramePosition],
+  );
+
   const handlePointerDown = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (!isReady || frames.length < MIN_INTERACTIVE_FRAMES) return;
     dragXRef.current = event.clientX;
     setIsDragging(true);
-    setAutoRotate(false);
-    if (resumeTimerRef.current) window.clearTimeout(resumeTimerRef.current);
+    pauseForInteraction();
     event.currentTarget.setPointerCapture(event.pointerId);
   };
 
   const handlePointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
-    if (dragXRef.current === null || frames.length < 2) return;
+    if (dragXRef.current === null || frames.length < MIN_INTERACTIVE_FRAMES) return;
     const delta = event.clientX - dragXRef.current;
     if (Math.abs(delta) < 1) return;
     setFramePosition(framePositionRef.current + delta / DRAG_PIXELS_PER_FRAME);
@@ -150,6 +162,7 @@ export function Viewer360({ product }: { product: Product }) {
   };
 
   const handlePointerEnd = (event: React.PointerEvent<HTMLDivElement>) => {
+    if (dragXRef.current === null) return;
     dragXRef.current = null;
     setIsDragging(false);
     scheduleGentleResume();
@@ -157,98 +170,145 @@ export function Viewer360({ product }: { product: Product }) {
       event.currentTarget.releasePointerCapture(event.pointerId);
     }
   };
->>>>>>> d98ef1a (Refine public showroom content and 360 viewer)
 
   if (product.viewer360Type === "embed" && product.viewer360EmbedUrl) {
-    return <div className="overflow-hidden rounded-[20px] border border-[#dce8dc] bg-white"><iframe src={product.viewer360EmbedUrl} title={`${product.name} 360 view`} className="h-[420px] w-full" loading="lazy" /></div>;
-  }
-
-<<<<<<< HEAD
-  if (frames.length < 2) {
-    return <div className="flex min-h-[320px] items-center justify-center rounded-[20px] border border-dashed border-[#b8d8bc] bg-[linear-gradient(135deg,#f8fff8,#eaf8ec)] p-8 text-center"><div><RotateCcw className="mx-auto text-[#119c3a]" size={42} /><h3 className="mt-4 text-3xl font-black text-[#101510]">360° Preview</h3><p className="mt-2 text-sm font-semibold text-[#5f6b62]">Single image available right now. Visit showroom for full walkaround.</p></div></div>;
-  }
-
-  const step = (delta:number) => setIndex((c) => (c + (delta > 0 ? 1 : -1) + frames.length) % frames.length);
-  const onMove = (clientX:number) => {
-    if (lastX.current === null) return;
-    const delta = clientX - lastX.current;
-    if (Math.abs(delta) < 12) return;
-    step(delta);
-    lastX.current = clientX;
-  };
-
-  return (
-    <div className={`select-none overflow-hidden rounded-[20px] border border-[#dce8dc] bg-[radial-gradient(circle_at_center,#fff_0,#edf8ee_100%)] p-4 ${dragging ? "cursor-grabbing" : "cursor-grab"}`}
-      onMouseEnter={()=>setInteracting(true)}
-      onMouseLeave={()=>{setDragging(false);lastX.current=null;setInteracting(false);autoRotatePauseUntil.current = performance.now() + 2600;}}
-      onMouseDown={(e)=>{setDragging(true);setInteracting(true);lastX.current=e.clientX;autoRotatePauseUntil.current = performance.now() + 2600;}}
-      onMouseMove={(e)=>onMove(e.clientX)}
-      onMouseUp={()=>{setDragging(false);lastX.current=null;autoRotatePauseUntil.current = performance.now() + 2600;}}
-      onTouchStart={(e)=>{setDragging(true);setInteracting(true);lastX.current=e.touches[0].clientX;autoRotatePauseUntil.current = performance.now() + 2800;}}
-      onTouchMove={(e)=>onMove(e.touches[0].clientX)}
-      onTouchEnd={()=>{setDragging(false);setInteracting(false);lastX.current=null;autoRotatePauseUntil.current = performance.now() + 2800;}}
-    >
-      <div className="flex items-center justify-between gap-4 px-2 pb-3"><h3 className="text-2xl font-black text-[#101510]">Drag / swipe to rotate</h3><div className="rounded-full bg-[#101510] px-3 py-1 text-xs font-black text-white">360°</div></div>
-      <div className="aspect-[4/3]">{ready ? <>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={officialAssetSrc(frames[index])} alt={`${product.name} frame ${index + 1}`} className="h-full w-full object-contain" draggable={false} />
-      </> : <div className="flex h-full animate-pulse items-center justify-center rounded-2xl bg-[#eef8ef] text-sm font-semibold text-[#526057]">Loading 360° view…</div>}</div>
-=======
-  if (product.viewer360Type !== "images" || frames.length < 2) {
     return (
-      <div className="flex min-h-[320px] items-center justify-center rounded-[20px] border border-dashed border-[#b8d8bc] bg-[linear-gradient(135deg,#f8fff8,#eaf8ec)] p-8 text-center">
+      <div className="overflow-hidden rounded-[20px] border border-[#dce8dc] bg-white">
+        <iframe
+          src={product.viewer360EmbedUrl}
+          title={`${product.name} 360 view`}
+          className="h-[420px] w-full"
+          loading="lazy"
+        />
+      </div>
+    );
+  }
+
+  if (product.viewer360Type !== "images" || frames.length < MIN_INTERACTIVE_FRAMES) {
+    return (
+      <div className="flex min-h-[340px] items-center justify-center rounded-[22px] border border-dashed border-[#b8d8bc] bg-[linear-gradient(135deg,#fbfffb,#edf8ef)] p-8 text-center shadow-[0_18px_55px_rgba(16,21,16,0.07)]">
         <div>
           <RotateCcw className="mx-auto text-[#119c3a]" size={42} />
-          <h3 className="mt-4 text-3xl font-black text-[#101510]">360° View Coming Soon</h3>
+          <h3 className="mt-4 text-3xl font-black text-[#101510]">360° view coming soon for this model.</h3>
           <p className="mt-2 text-sm font-semibold text-[#5f6b62]">
-            More showroom angles will be added when the full image set is ready.
+            Visit the showroom to see available colours and display vehicles.
           </p>
         </div>
       </div>
     );
   }
 
+  const progress = Math.round((loadedCount / frames.length) * 100);
+
   return (
     <div
       ref={containerRef}
-      className="touch-none select-none overflow-hidden rounded-[20px] border border-[#dce8dc] bg-[radial-gradient(circle_at_center,#fff_0,#edf8ee_100%)] p-4"
+      className={`touch-none select-none overflow-hidden rounded-[22px] border border-[#dce8dc] bg-[radial-gradient(circle_at_center,#fff_0,#edf8ee_100%)] p-4 shadow-[0_24px_70px_rgba(16,21,16,0.09)] ${isDragging ? "cursor-grabbing" : "cursor-grab"}`}
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
       onPointerUp={handlePointerEnd}
       onPointerCancel={handlePointerEnd}
-      onPointerLeave={() => {
-        if (!isDragging) return;
-        dragXRef.current = null;
-        setIsDragging(false);
-        scheduleGentleResume();
-      }}
+      onPointerLeave={handlePointerEnd}
     >
-      <div className="flex items-center justify-between gap-4 px-2 pb-3">
+      <div className="flex flex-col gap-3 px-2 pb-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <p className="text-xs font-black uppercase tracking-[0.18em] text-[#119c3a]">360° showroom view</p>
+          <p className="text-xs font-black uppercase tracking-[0.18em] text-[#119c3a]">360° vehicle view</p>
           <h3 className="text-2xl font-black text-[#101510]">Drag or swipe to rotate</h3>
+          {selectedVariant ? (
+            <p className="mt-1 text-xs font-bold text-[#657067]">{selectedVariant.name}</p>
+          ) : null}
         </div>
         <button
           type="button"
-          aria-label={autoRotate ? "Pause 360 auto rotation" : "Play 360 auto rotation"}
+          aria-label={autoRotate ? "Pause 360 rotation" : "Play 360 rotation"}
           onClick={(event) => {
             event.stopPropagation();
             setAutoRotate((value) => !value);
           }}
-          className="inline-flex items-center gap-2 rounded-full bg-[#101510] px-3 py-2 text-xs font-black text-white"
+          className="inline-flex min-h-10 items-center gap-2 rounded-full bg-[#101510] px-3 py-2 text-xs font-black text-white"
         >
           {autoRotate ? <Pause size={14} /> : <Play size={14} />}
           {index + 1}/{frames.length}
         </button>
       </div>
-      <div className="aspect-[4/3]">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={officialAssetSrc(visibleFrame)} alt={`${product.name} 360 frame ${index + 1}`} className="h-full w-full object-contain" draggable={false} />
+
+      {product.variants.length ? (
+        <div className="mb-4 flex gap-2 overflow-x-auto px-2 pb-1">
+          {product.variants.map((variant) => (
+            <button
+              key={variant.name}
+              type="button"
+              onPointerDown={(event) => event.stopPropagation()}
+              onClick={(event) => {
+                event.stopPropagation();
+                selectVariant(variant.name);
+              }}
+              className={`flex shrink-0 items-center gap-2 rounded-full border px-3 py-2 text-xs font-black transition ${
+                selectedVariant?.name === variant.name
+                  ? "border-[#101510] bg-[#101510] text-white"
+                  : "border-[#dce8dc] bg-white text-[#101510]"
+              }`}
+              aria-label={`Show ${variant.name}`}
+            >
+              <span className="size-4 rounded-full border border-black/15" style={{ background: variant.color }} />
+              {variant.name}
+            </button>
+          ))}
+        </div>
+      ) : null}
+
+      <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-white/55">
+        {isReady ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={officialAssetSrc(visibleFrame)}
+            alt={`${product.name} 360 frame ${index + 1}`}
+            className="h-full w-full object-contain"
+            draggable={false}
+          />
+        ) : (
+          <div className="flex h-full items-center justify-center">
+            <div className="text-center">
+              <Loader2 className="mx-auto animate-spin text-[#119c3a]" size={34} />
+              <p className="mt-3 text-sm font-black text-[#101510]">Loading 360° view</p>
+              <p className="mt-1 text-xs font-semibold text-[#657067]">{progress}% ready</p>
+            </div>
+          </div>
+        )}
+        {isReady ? (
+          <>
+            <button
+              type="button"
+              aria-label="Rotate left"
+              onClick={(event) => {
+                event.stopPropagation();
+                step(-1);
+              }}
+              className="absolute left-3 top-1/2 inline-flex size-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-[#101510] shadow-lg backdrop-blur"
+            >
+              <ChevronLeft size={20} />
+            </button>
+            <button
+              type="button"
+              aria-label="Rotate right"
+              onClick={(event) => {
+                event.stopPropagation();
+                step(1);
+              }}
+              className="absolute right-3 top-1/2 inline-flex size-10 -translate-y-1/2 items-center justify-center rounded-full bg-white/90 text-[#101510] shadow-lg backdrop-blur"
+            >
+              <ChevronRight size={20} />
+            </button>
+          </>
+        ) : null}
       </div>
-      <div className="h-1 rounded-full bg-[#dce8dc]">
-        <div className="h-1 rounded-full bg-[#119c3a] transition-[width] duration-150" style={{ width: `${((index + 1) / frames.length) * 100}%` }} />
+
+      <div className="mt-3 h-1 rounded-full bg-[#dce8dc]">
+        <div
+          className="h-1 rounded-full bg-[#119c3a] transition-[width] duration-150"
+          style={{ width: `${isReady ? ((index + 1) / frames.length) * 100 : progress}%` }}
+        />
       </div>
->>>>>>> d98ef1a (Refine public showroom content and 360 viewer)
     </div>
   );
 }

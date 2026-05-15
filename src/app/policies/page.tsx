@@ -1,4 +1,14 @@
+import type { Metadata } from "next";
 import { getPolicies } from "@/lib/data/queries";
+
+export const metadata: Metadata = {
+  title: "Kinetic Green Shahdol Policies",
+  description:
+    "Kinetic Green Shahdol website policies for enquiries, no online payment, booking discussion, finance, delivery, refund and showroom support.",
+  alternates: {
+    canonical: "/policies",
+  },
+};
 
 export default async function PoliciesPage() {
   const policies = await getPolicies();

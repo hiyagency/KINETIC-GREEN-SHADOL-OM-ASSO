@@ -1,7 +1,17 @@
+import type { Metadata } from "next";
 import { EnquiryForm } from "@/components/public/EnquiryForm";
 import { ButtonLink } from "@/components/ui/Button";
 import { getStoreSettings, getVehicles } from "@/lib/data/queries";
 import { phoneHref } from "@/lib/utils";
+
+export const metadata: Metadata = {
+  title: "Book EV Enquiry or Test Ride",
+  description:
+    "Send an enquiry to Kinetic Green Shahdol for electric two-wheeler price, availability, finance, test ride and booking support.",
+  alternates: {
+    canonical: "/book-enquiry",
+  },
+};
 
 export default async function BookEnquiryPage({
   searchParams,

@@ -1,7 +1,10 @@
 import {
+  GOOGLE_MAPS_URL,
   HINGLISH_DISCLAIMER,
   INSTAGRAM_PROFILE_URL,
+  MAP_EMBED_URL,
   PUBLIC_HERO_TITLE,
+  SEO_DESCRIPTION,
 } from "@/lib/constants";
 import importedProducts from "@/lib/data/official-products.json";
 import type { FAQ, GalleryItem, Policy, Product, StoreSettings } from "@/lib/types";
@@ -16,8 +19,8 @@ export const storeSettings: StoreSettings = {
     "https://www.whatsapp.com/catalog/919243016493/?app_absent=0&utm_source=ig",
   instagramUrl: INSTAGRAM_PROFILE_URL,
   facebookUrl: "",
-  googleMapsEmbed: "",
-  googleMapsUrl: "",
+  googleMapsEmbed: `<iframe src="${MAP_EMBED_URL}" width="100%" height="360" style="border:0;" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade" title="Kinetic Green Shahdol map"></iframe>`,
+  googleMapsUrl: GOOGLE_MAPS_URL,
   storeHours: "10:00 AM - 8:00 PM",
   heroHeadline: PUBLIC_HERO_TITLE,
   heroSubheadline:
@@ -27,8 +30,7 @@ export const storeSettings: StoreSettings = {
   footerCopy:
     "Kinetic Green Shahdol by Om Associates. Non-registration electric two-wheelers, local enquiry, test ride and showroom support.",
   seoTitle: "Kinetic Green Shahdol | Non-Registration Electric Two-Wheelers",
-  seoDescription:
-    "KINETIC GREEN Shahdol brings non-registration electric two-wheelers for students, daily local travel, test rides and WhatsApp enquiries.",
+  seoDescription: SEO_DESCRIPTION,
 };
 
 export const products = importedProducts as Product[];
@@ -39,13 +41,8 @@ export const faqs: FAQ[] = [
     id: "faq-licence",
     question: "Can students ride these electric two-wheelers?",
     answer:
-<<<<<<< HEAD
-      "Listed low-speed models shown here are No Licence / No RTO friendly. Our team will confirm the exact model before delivery.",
-    category: "No Licence",
-=======
       "Yes. KINETIC GREEN Shahdol offers non-registration electric two-wheelers that are ideal for students, tuition, college, and everyday local rides.",
     category: "Students",
->>>>>>> d98ef1a (Refine public showroom content and 360 viewer)
     productId: null,
     isPublished: true,
     sortOrder: 1,
@@ -54,13 +51,8 @@ export const faqs: FAQ[] = [
     id: "faq-rto",
     question: "Do you have non-registration electric two-wheelers?",
     answer:
-<<<<<<< HEAD
-      "Listed low-speed models on this site are shown as No RTO. Call us for current model and colour availability.",
-    category: "No Licence",
-=======
       "Yes. Non-registration electric two-wheelers are available at our Shahdol showroom. Visit or enquire and our team will help you choose the right model.",
     category: "Products",
->>>>>>> d98ef1a (Refine public showroom content and 360 viewer)
     productId: null,
     isPublished: true,
     sortOrder: 2,
@@ -69,11 +61,7 @@ export const faqs: FAQ[] = [
     id: "faq-models",
     question: "Which model should I choose?",
     answer:
-<<<<<<< HEAD
-      "No Licence EV page par student-friendly local rides dikhte hain. Showroom team aapko best option suggest karegi.",
-=======
       "Tell us your daily travel need, rider age, route, and budget. Our showroom team will suggest a suitable non-registration electric two-wheeler.",
->>>>>>> d98ef1a (Refine public showroom content and 360 viewer)
     category: "Products",
     productId: null,
     isPublished: true,
@@ -152,22 +140,90 @@ export const policies: Policy[] = [
 export const gallery: GalleryItem[] = [
   {
     id: "gallery-1",
-    imageUrl: "",
-<<<<<<< HEAD
-    caption: "Showroom photos",
-=======
+    imageUrl: "/showroom/kinetic-green-shahdol-showroom-01.jpeg",
     caption: "Kinetic Green Shahdol showroom",
->>>>>>> d98ef1a (Refine public showroom content and 360 viewer)
     type: "showroom",
     isFeatured: true,
     sortOrder: 1,
   },
   {
     id: "gallery-2",
-    imageUrl: "",
+    imageUrl: "/showroom/kinetic-green-shahdol-showroom-02.jpeg",
     caption: "Kinetic Green Shahdol delivery and display photos",
     type: "showroom",
     isFeatured: true,
     sortOrder: 2,
+  },
+  {
+    id: "gallery-3",
+    imageUrl: "/showroom/kinetic-green-shahdol-showroom-03.jpeg",
+    caption: "Kinetic Green electric two-wheeler at Shahdol showroom",
+    type: "showroom",
+    isFeatured: true,
+    sortOrder: 3,
+  },
+  {
+    id: "gallery-4",
+    imageUrl: "/showroom/kinetic-green-shahdol-showroom-04.jpeg",
+    caption: "Kinetic Green Shahdol vehicle display",
+    type: "showroom",
+    isFeatured: true,
+    sortOrder: 4,
+  },
+  {
+    id: "gallery-5",
+    imageUrl: "/showroom/kinetic-green-shahdol-showroom-05.jpeg",
+    caption: "Kinetic Green Shahdol electric scooter photo",
+    type: "showroom",
+    isFeatured: true,
+    sortOrder: 5,
+  },
+  {
+    id: "gallery-6",
+    imageUrl: "/showroom/kinetic-green-shahdol-showroom-06.jpeg",
+    caption: "Non-registration electric two-wheeler available in Shahdol",
+    type: "showroom",
+    isFeatured: true,
+    sortOrder: 6,
+  },
+  {
+    id: "gallery-7",
+    imageUrl: "/showroom/kinetic-green-shahdol-showroom-07.jpeg",
+    caption: "Kinetic Green showroom vehicle close-up in Shahdol",
+    type: "showroom",
+    isFeatured: true,
+    sortOrder: 7,
+  },
+  {
+    id: "gallery-8",
+    imageUrl: "/showroom/kinetic-green-shahdol-showroom-08.jpeg",
+    caption: "Kinetic Green Shahdol EV display photo",
+    type: "showroom",
+    isFeatured: true,
+    sortOrder: 8,
+  },
+  {
+    id: "gallery-9",
+    imageUrl: "/showroom/kinetic-green-shahdol-showroom-09.jpeg",
+    caption: "Student-friendly electric two-wheeler at Kinetic Green Shahdol",
+    type: "showroom",
+    isFeatured: true,
+    sortOrder: 9,
+  },
+  {
+    id: "gallery-10",
+    imageUrl: "/showroom/kinetic-green-shahdol-showroom-10.jpeg",
+    caption: "Kinetic Green Shahdol delivery and customer support",
+    type: "showroom",
+    isFeatured: true,
+    sortOrder: 10,
+  },
+  {
+    id: "gallery-11",
+    imageUrl: "/showroom/kinetic-green-shahdol-showroom-11.jpeg",
+    caption: "Kinetic Green Shahdol showroom visit photo",
+    type: "showroom",
+    isFeatured: true,
+    sortOrder: 11,
   },
 ];

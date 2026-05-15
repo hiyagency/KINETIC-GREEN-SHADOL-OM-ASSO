@@ -1,6 +1,16 @@
+import type { Metadata } from "next";
 import { GallerySection } from "@/components/public/GallerySection";
 import { ButtonLink } from "@/components/ui/Button";
 import { getGallery, getStoreSettings } from "@/lib/data/queries";
+
+export const metadata: Metadata = {
+  title: "About Om Associates Kinetic Green Shahdol",
+  description:
+    "Kinetic Green Shahdol by Om Associates helps local riders choose electric two-wheelers for students, daily rides, test rides, finance and ownership support.",
+  alternates: {
+    canonical: "/about",
+  },
+};
 
 export default async function AboutPage() {
   const [settings, gallery] = await Promise.all([getStoreSettings(), getGallery()]);

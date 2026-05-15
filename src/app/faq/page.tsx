@@ -1,5 +1,15 @@
+import type { Metadata } from "next";
 import { FAQAccordion } from "@/components/public/FAQAccordion";
 import { getFaqs } from "@/lib/data/queries";
+
+export const metadata: Metadata = {
+  title: "Kinetic Green Shahdol FAQs",
+  description:
+    "Answers about non-registration electric two-wheelers, no-licence EV use, student rides, price, warranty, finance, showroom visit and test ride support.",
+  alternates: {
+    canonical: "/faq",
+  },
+};
 
 export default async function FAQPage() {
   const faqs = await getFaqs();
