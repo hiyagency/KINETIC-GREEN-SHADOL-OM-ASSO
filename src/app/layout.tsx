@@ -4,7 +4,7 @@ import { Footer } from "@/components/public/Footer";
 import { Header } from "@/components/public/Header";
 import { StickyMobileCTA } from "@/components/public/StickyMobileCTA";
 import { getStoreSettings } from "@/lib/data/queries";
-import { GOOGLE_MAPS_URL, SEO_DESCRIPTION, SEO_KEYWORDS, SITE_NAME, SITE_URL } from "@/lib/constants";
+import { GOOGLE_MAPS_URL, LOCAL_SERVICE_AREAS, SEO_DESCRIPTION, SEO_KEYWORDS, SITE_NAME, SITE_URL } from "@/lib/constants";
 import "./globals.css";
 
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
@@ -109,7 +109,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     hasMap: GOOGLE_MAPS_URL,
     openingHours: "Mo-Su 10:00-20:00",
     priceRange: "Contact showroom",
-    areaServed: ["Shahdol", "Kotma Tiraha", "Madhya Pradesh"],
+    areaServed: LOCAL_SERVICE_AREAS,
     sameAs: [settings.instagramUrl, GOOGLE_MAPS_URL].filter(Boolean),
     makesOffer: [
       {
@@ -121,6 +121,14 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         },
         availability: "https://schema.org/InStock",
         areaServed: "Shahdol",
+      },
+      {
+        "@type": "Offer",
+        itemOffered: {
+          "@type": "Service",
+          name: "Electric scooter test ride and enquiry in Shahdol",
+        },
+        areaServed: LOCAL_SERVICE_AREAS,
       },
     ],
   };

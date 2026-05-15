@@ -10,6 +10,7 @@ import { Reveal } from "@/components/public/Motion";
 import { ButtonLink } from "@/components/ui/Button";
 import {
   HINGLISH_DISCLAIMER,
+  LOCAL_SERVICE_AREAS,
   LOW_SPEED_RULE_HINGLISH,
   PUBLIC_HERO_TITLE,
   PUBLIC_POSITIONING,
@@ -166,6 +167,25 @@ export default async function HomePage() {
           </div>
           <div className="mt-8">
             <ButtonLink href="/book-enquiry" variant="dark">Visit showroom / enquire now</ButtonLink>
+          </div>
+        </div>
+      </section>
+
+      <section className="border-y border-[#dbe8db] bg-[#f8fbf5] py-12">
+        <div className="mx-auto grid max-w-7xl gap-6 px-4 sm:px-6 lg:grid-cols-[0.75fr_1fr]">
+          <div>
+            <p className="text-sm font-black uppercase tracking-[0.18em] text-[#119c3a]">Electric scooters near Shahdol</p>
+            <h2 className="mt-3 text-4xl font-black leading-tight text-[#101510]">Kinetic Green electric two-wheelers for Shahdol and nearby areas.</h2>
+            <p className="mt-4 text-sm font-semibold leading-6 text-[#526057]">
+              Enquire for E-Luna, E-Zulu and Zing models, non-RTO guidance, test rides, finance details and current showroom availability.
+            </p>
+          </div>
+          <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+            {LOCAL_SERVICE_AREAS.map((area) => (
+              <span key={area} className="rounded-xl border border-[#dbe8db] bg-white px-4 py-3 text-sm font-black text-[#101510]">
+                {area}
+              </span>
+            ))}
           </div>
         </div>
       </section>

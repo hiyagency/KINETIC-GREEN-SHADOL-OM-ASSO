@@ -24,6 +24,22 @@ export const SITE_URL =
 export const SEO_DESCRIPTION =
   "Kinetic Green Shahdol by Om Associates offers non-registration electric two-wheelers, no-licence EV guidance, test rides, battery warranty support, finance options, and WhatsApp enquiries in Shahdol, Madhya Pradesh.";
 
+export const LOCAL_SERVICE_AREAS = [
+  "Shahdol",
+  "Kotma Tiraha",
+  "Badhganga Road",
+  "Burhar",
+  "Dhanpuri",
+  "Budhar",
+  "Amlai",
+  "Sohagpur",
+  "Jaisinghnagar",
+  "Beohari",
+  "Umaria",
+  "Anuppur",
+  "Madhya Pradesh",
+];
+
 export const SEO_KEYWORDS = [
   "Kinetic Green Shahdol",
   "Kinetic Green showroom Shahdol",
@@ -45,6 +61,16 @@ export const SEO_KEYWORDS = [
   "best electric scooter in Shahdol",
   "electric scooter near Kotma Tiraha Shahdol",
   "Kinetic Green Madhya Pradesh",
+  "E Luna Shahdol",
+  "E-Luna Go Shahdol",
+  "E-Luna Plus Shahdol",
+  "E-Luna Pro Shahdol",
+  "E-Luna Prime Shahdol",
+  "E-Zulu Signature Edition Shahdol",
+  "electric bike Shahdol",
+  "electric moped Shahdol",
+  "Formspree Kinetic Green Shahdol enquiry",
+  ...LOCAL_SERVICE_AREAS.map((area) => `electric scooter ${area}`),
 ];
 
 export const INSTAGRAM_PROFILE_URL =

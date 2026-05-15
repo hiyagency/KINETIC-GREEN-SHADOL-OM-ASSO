@@ -1,14 +1,15 @@
 "use client";
 
-import { useActionState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Send } from "lucide-react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { submitEnquiry } from "@/app/actions";
+import { useState } from "react";
 import { enquiryTypes } from "@/lib/constants";
 import type { Vehicle } from "@/lib/types";
 import { Button } from "@/components/ui/Button";
+
+const FORMSPREE_ENDPOINT = "https://formspree.io/f/maqvreoq";
 
 const formSchema = z.object({
   customerName: z.string().min(2, "Enter customer name"),
@@ -24,6 +25,10 @@ const formSchema = z.object({
 });
 
 type FormValues = z.infer<typeof formSchema>;
+type SubmitState = {
+  ok: boolean;
+  message: string;
+};
 
 export function EnquiryForm({
   vehicles,
@@ -32,33 +37,82 @@ export function EnquiryForm({
   vehicles: Vehicle[];
   selectedVehicle?: string;
 }) {
-  const [state, formAction, pending] = useActionState(submitEnquiry, {
-    ok: false,
-    message: "",
-  });
+  const [state, setState] = useState<SubmitState>({ ok: false, message: "" });
+  const [pending, setPending] = useState(false);
   const {
     register,
-    trigger,
+    handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       selectedVehicleName: selectedVehicle || "",
-      enquiryType: "No Licence EV",
+      enquiryType: "Non-Registration Two-Wheeler",
       city: "Shahdol",
       consent: false,
     },
   });
 
+  async function onSubmit(values: FormValues) {
+    setPending(true);
+    setState({ ok: false, message: "" });
+
+    try {
+      const response = await fetch(FORMSPREE_ENDPOINT, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          _subject: `Kinetic Green Shahdol enquiry - ${values.selectedVehicleName || "General"}`,
+          customer_name: values.customerName,
+          phone: values.phone,
+          whatsapp: values.whatsapp || values.phone,
+          email: values.email || "",
+          selected_vehicle: values.selectedVehicleName || "Not selected",
+          enquiry_type: values.enquiryType,
+          preferred_visit_date: values.preferredVisitDate || "",
+          city: values.city,
+          message: values.message || "",
+          consent: values.consent ? "Yes" : "No",
+          source: "Kinetic Green Shahdol website",
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Formspree submission failed");
+      }
+
+      setState({
+        ok: true,
+        message: "Thank you for your enquiry. Kinetic Green Shahdol will contact you soon.",
+      });
+      reset({
+        selectedVehicleName: selectedVehicle || "",
+        enquiryType: "Non-Registration Two-Wheeler",
+        city: "Shahdol",
+        consent: false,
+      });
+    } catch {
+      setState({
+        ok: false,
+        message: "The enquiry could not be sent. Please call or WhatsApp the showroom.",
+      });
+    } finally {
+      setPending(false);
+    }
+  }
+
   return (
     <form
-      action={formAction}
-      onSubmit={async (event) => {
-        const valid = await trigger();
-        if (!valid) event.preventDefault();
-      }}
+      action={FORMSPREE_ENDPOINT}
+      method="POST"
+      onSubmit={handleSubmit(onSubmit)}
       className="grid gap-4 rounded-lg bg-white p-4 shadow-[0_18px_60px_rgba(16,21,19,0.08)]"
     >
+      <input type="hidden" name="_subject" value="Kinetic Green Shahdol enquiry" />
       <div className="grid gap-3 sm:grid-cols-2">
         <label className="grid gap-1 text-sm font-bold text-[#202722]">
           Customer name
