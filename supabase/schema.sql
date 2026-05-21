@@ -228,7 +228,7 @@ insert into public.site_settings (key, value) values
   ('storeName', '"Kinetic Green Shahdol"'::jsonb),
   ('managedBy', '"Om Associates"'::jsonb),
   ('address', '"Om Associate, Kotma Tiraha, Badhganga Road, Shahdol (M.P)"'::jsonb),
-  ('phones', '["9243016493","8349290500"]'::jsonb),
+  ('phones', '["9243016493","+91 94250 16493"]'::jsonb),
   ('whatsappNumber', '"919243016493"'::jsonb),
   ('whatsappUrl', '"https://www.whatsapp.com/catalog/919243016493/?app_absent=0&utm_source=ig"'::jsonb),
   ('instagramUrl', '"https://www.instagram.com/kinetic_green_shahdol/"'::jsonb),

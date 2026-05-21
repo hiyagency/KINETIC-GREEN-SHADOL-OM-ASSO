@@ -13,7 +13,7 @@ export const storeSettings: StoreSettings = {
   storeName: "Kinetic Green Shahdol",
   managedBy: "Om Associates",
   address: "Om Associate, Kotma Tiraha, Badhganga Road, Shahdol (M.P)",
-  phones: ["9243016493", "8349290500"],
+  phones: ["9243016493", "+91 94250 16493"],
   whatsappNumber: "919243016493",
   whatsappUrl:
     "https://www.whatsapp.com/catalog/919243016493/?app_absent=0&utm_source=ig",
