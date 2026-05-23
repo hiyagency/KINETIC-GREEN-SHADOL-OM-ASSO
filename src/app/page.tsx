@@ -152,10 +152,11 @@ export default async function HomePage() {
               Get trusted non-registration electric two-wheelers with battery warranty, easy finance options, and simple ownership support from KINETIC GREEN Shahdol.
             </p>
           </div>
-          <div className="mt-8 grid gap-4 md:grid-cols-3">
+          <div className="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-4">
             {[
               [ShieldCheck, "3 Year Battery Warranty", "Ride with confidence with battery warranty support for up to 3 years."],
-              [BadgeIndianRupee, "Downpayment from ₹2,000", "Start your electric ride with easy downpayment options beginning from just ₹2,000."],
+              [BadgeIndianRupee, "Downpayment from Rs 15,000", "Start your electric ride with easy downpayment options beginning from just Rs 15,000."],
+              [HandCoins, "Booking Amount Rs 500", "Reserve your preferred electric vehicle at the showroom with a booking amount of just Rs 500."],
               [HandCoins, "Finance & Cash Available", "Choose what works best for you — easy financing or direct cash purchase."],
             ].map(([Icon, title, text]) => (
               <Reveal key={String(title)} className="rounded-2xl border border-[#dbe8db] bg-[#f8fbf5] p-6">
