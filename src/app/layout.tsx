@@ -94,6 +94,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       `${SITE_URL}/showroom/kinetic-green-shahdol-showroom-03.jpeg`,
     ],
     telephone: settings.phones,
+    email: settings.email,
     address: {
       "@type": "PostalAddress",
       streetAddress: settings.address,
