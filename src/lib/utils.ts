@@ -11,6 +11,10 @@ export function phoneHref(phone: string) {
   return `tel:${phone.replace(/\D/g, "")}`;
 }
 
+export function emailHref(email: string) {
+  return `mailto:${email}`;
+}
+
 export function directionsHref(settings: StoreSettings) {
   return GOOGLE_MAPS_URL || settings.googleMapsUrl || `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(settings.address)}`;
 }
