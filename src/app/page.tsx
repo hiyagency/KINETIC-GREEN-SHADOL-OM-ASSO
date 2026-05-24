@@ -16,7 +16,7 @@ import {
   PUBLIC_POSITIONING,
 } from "@/lib/constants";
 import { getEligibleProducts, getFaqs, getGallery, getProducts, getStoreSettings } from "@/lib/data/queries";
-import { whatsappHref, whatsappMessage } from "@/lib/utils";
+import { emailHref, whatsappHref, whatsappMessage } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Kinetic Green Shahdol | No-Licence EV Showroom",
@@ -78,8 +78,9 @@ export default async function HomePage() {
       </section>
 
       <section className="border-y border-[#dbe8db] bg-white">
-        <div className="mx-auto grid max-w-7xl gap-3 px-4 py-4 text-sm font-black sm:px-6 md:grid-cols-4">
+        <div className="mx-auto grid max-w-7xl gap-3 px-4 py-4 text-sm font-black sm:px-6 md:grid-cols-5">
           <span>Call: {settings.phones.join(" / ")}</span>
+          <a className="text-[#119c3a]" href={emailHref(settings.email)}>{settings.email}</a>
           <a className="text-[#119c3a]" href={whatsappHref(settings, whatsappMessage("general"))}>WhatsApp</a>
           <a href={settings.instagramUrl}>Instagram</a>
           <span>Kotma Tiraha, Shahdol</span>
