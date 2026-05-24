@@ -3,7 +3,7 @@ import { EnquiryForm } from "@/components/public/EnquiryForm";
 import { GallerySection } from "@/components/public/GallerySection";
 import { MapPlaceholder } from "@/components/public/MapPlaceholder";
 import { getGallery, getStoreSettings, getVehicles } from "@/lib/data/queries";
-import { phoneHref } from "@/lib/utils";
+import { emailHref, phoneHref } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Contact Kinetic Green Shahdol",
@@ -32,6 +32,7 @@ export default async function ContactPage() {
           {settings.phones.map((phone) => (
             <a key={phone} className="block font-black text-[#13a538]" href={phoneHref(phone)}>{phone}</a>
           ))}
+          <a className="block font-black text-[#13a538]" href={emailHref(settings.email)}>{settings.email}</a>
           <a className="block font-black text-[#13a538]" href={settings.whatsappUrl}>WhatsApp</a>
           <a className="block font-black text-[#13a538]" href={settings.instagramUrl}>Instagram</a>
           {settings.facebookUrl ? <p>Facebook: {settings.facebookUrl}</p> : null}
