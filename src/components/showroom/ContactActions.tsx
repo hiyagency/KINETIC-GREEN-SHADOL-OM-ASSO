@@ -1,7 +1,7 @@
-import { CalendarCheck, MapPin, MessageCircle, Phone, Send } from "lucide-react";
+import { CalendarCheck, Mail, MapPin, MessageCircle, Phone, Send } from "lucide-react";
 import { ButtonLink } from "@/components/ui/Button";
 import type { Product, StoreSettings } from "@/lib/types";
-import { directionsHref, phoneHref, whatsappHref, whatsappMessage } from "@/lib/utils";
+import { directionsHref, emailHref, phoneHref, whatsappHref, whatsappMessage } from "@/lib/utils";
 
 function InstagramLogo() {
   return (
@@ -43,6 +43,9 @@ export function ContactActions({
       </ButtonLink>
       <ButtonLink href={`/book-enquiry${product ? `?vehicle=${encodeURIComponent(product.name)}` : ""}`} variant="light">
         <Send size={16} /> Send Enquiry
+      </ButtonLink>
+      <ButtonLink href={emailHref(settings.email)} variant="light">
+        <Mail size={16} /> Email
       </ButtonLink>
       <ButtonLink href={directionsHref(settings)} variant="light">
         <MapPin size={16} /> Visit Showroom
