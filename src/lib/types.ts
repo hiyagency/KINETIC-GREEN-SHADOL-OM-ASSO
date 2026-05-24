@@ -60,6 +60,7 @@ export type StoreSettings = {
   storeName: string;
   managedBy: string;
   address: string;
+  email: string;
   phones: string[];
   whatsappUrl: string;
   whatsappNumber: string;
